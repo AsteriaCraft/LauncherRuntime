@@ -3,6 +3,7 @@ package pro.gravit.launcher.gui.overlays;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Labeled;
+import pro.gravit.launcher.core.api.LauncherAPIHolder;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.impl.AbstractStage;
@@ -12,6 +13,7 @@ import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.utils.helper.LogHelper;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class ProcessingOverlay extends AbstractOverlay {
@@ -46,17 +48,45 @@ public class ProcessingOverlay extends AbstractOverlay {
         description.setText(e.toString());
     }
 
+    @Deprecated
     public final <T extends WebSocketEvent> void processRequest(AbstractStage stage, String message, Request<T> request,
             Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
         processRequest(stage, message, request, onSuccess, null, onError);
     }
 
+    @Deprecated
     public final <T extends WebSocketEvent> void processRequest(AbstractStage stage, String message, Request<T> request,
             Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
         try {
             ContextHelper.runInFxThreadStatic(() -> show(stage, (e) -> {
                 description.setText(message);
                 application.service.request(request).thenAccept((result) -> {
+                    LogHelper.dev("RequestFuture complete normally");
+                    onSuccess.accept(result);
+                    ContextHelper.runInFxThreadStatic(() -> hide(0, null));
+                }).exceptionally((error) -> {
+                    if (onException != null) onException.accept(error);
+                    else ContextHelper.runInFxThreadStatic(() -> errorHandle(error.getCause()));
+                    ContextHelper.runInFxThreadStatic(() -> hide(2500, onError));
+                    return null;
+                });
+            }));
+        } catch (Exception e) {
+            ContextHelper.runInFxThreadStatic(() -> errorHandle(e));
+        }
+    }
+
+    public final <T> void processRequest(AbstractStage stage, String message, CompletableFuture<T> request,
+            Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
+        processRequest(stage, message, request, onSuccess, null, onError);
+    }
+
+    public final <T> void processRequest(AbstractStage stage, String message, CompletableFuture<T> request,
+            Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
+        try {
+            ContextHelper.runInFxThreadStatic(() -> show(stage, (e) -> {
+                description.setText(message);
+                request.thenAccept((result) -> {
                     LogHelper.dev("RequestFuture complete normally");
                     onSuccess.accept(result);
                     ContextHelper.runInFxThreadStatic(() -> hide(0, null));

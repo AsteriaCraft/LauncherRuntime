@@ -1,4 +1,5 @@
 package pro.gravit.launcher.gui.config;
+import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.core.backend.UserSettings;
 import pro.gravit.launcher.gui.service.JavaService;
 import pro.gravit.launcher.gui.utils.SystemTheme;
@@ -26,7 +27,7 @@ public class RuntimeSettings extends UserSettings {
     @LauncherNetworkAPI
     public boolean autoAuth;
     @LauncherNetworkAPI
-    public GetAvailabilityAuthRequestEvent.AuthAvailability lastAuth;
+    public AuthMethod lastAuth;
     @LauncherNetworkAPI
     public String updatesDirPath;
     @LauncherNetworkAPI

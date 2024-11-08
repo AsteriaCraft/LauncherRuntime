@@ -123,11 +123,13 @@ public class JavaFXApplication extends Application {
         registerCommands();
     }
 
+    @Deprecated
     public final <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
             Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
         gui.processingOverlay.processRequest(getMainStage(), message, request, onSuccess, onError);
     }
 
+    @Deprecated
     public final <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
             Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
         gui.processingOverlay.processRequest(getMainStage(), message, request, onSuccess, onException, onError);

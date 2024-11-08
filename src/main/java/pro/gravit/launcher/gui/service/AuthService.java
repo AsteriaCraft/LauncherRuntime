@@ -2,6 +2,7 @@ package pro.gravit.launcher.gui.service;
 
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
+import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.base.events.request.AuthRequestEvent;
 import pro.gravit.launcher.base.events.request.GetAvailabilityAuthRequestEvent;
@@ -18,7 +19,7 @@ public class AuthService {
     private final LauncherConfig config = Launcher.getConfig();
     private final JavaFXApplication application;
     private AuthRequestEvent rawAuthResult;
-    private GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability;
+    private AuthMethod authAvailability;
 
     public AuthService(JavaFXApplication application) {
         this.application = application;
@@ -90,16 +91,16 @@ public class AuthService {
         }
     }
 
-    public void setAuthAvailability(GetAvailabilityAuthRequestEvent.AuthAvailability info) {
+    public void setAuthAvailability(AuthMethod info) {
         this.authAvailability = info;
     }
 
-    public GetAvailabilityAuthRequestEvent.AuthAvailability getAuthAvailability() {
+    public AuthMethod getAuthAvailability() {
         return authAvailability;
     }
 
     public boolean isFeatureAvailable(String name) {
-        return authAvailability.features != null && authAvailability.features.contains(name);
+        return authAvailability.getFeatures() != null && authAvailability.getFeatures().contains(name);
     }
 
     public String getUsername() {

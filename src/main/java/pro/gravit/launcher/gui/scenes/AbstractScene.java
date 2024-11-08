@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.layout.Pane;
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
+import pro.gravit.launcher.core.api.LauncherAPIHolder;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.impl.AbstractStage;
@@ -17,6 +18,7 @@ import pro.gravit.launcher.base.request.Request;
 import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.launcher.base.request.auth.ExitRequest;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class AbstractScene extends AbstractVisualComponent {
@@ -59,12 +61,24 @@ public abstract class AbstractScene extends AbstractVisualComponent {
         overlay.show(currentStage, onFinished);
     }
 
+    @Deprecated
     protected final <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
             Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
         application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onError);
     }
 
+    @Deprecated
     protected final <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
+            Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
+        application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onException, onError);
+    }
+
+    protected final <T> void processRequest(String message, CompletableFuture<T> request,
+            Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
+        application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onError);
+    }
+
+    protected final <T> void processRequest(String message, CompletableFuture<T> request,
             Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
         application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onException, onError);
     }
@@ -79,7 +93,7 @@ public abstract class AbstractScene extends AbstractVisualComponent {
     }
 
     protected void userExit() {
-        processRequest(application.getTranslation("runtime.scenes.settings.exitDialog.processing"), new ExitRequest(),
+        processRequest(application.getTranslation("runtime.scenes.settings.exitDialog.processing"), LauncherAPIHolder.auth().exit(),
                        (event) -> {
                            // Exit to main menu
                            ContextHelper.runInFxThreadStatic(() -> {
@@ -145,12 +159,24 @@ public abstract class AbstractScene extends AbstractVisualComponent {
             contextHelper.runInFxThread(runnable);
         }
 
+        @Deprecated
         public <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
                 Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
             AbstractScene.this.processRequest(message, request, onSuccess, onError);
         }
 
+        @Deprecated
         public final <T extends WebSocketEvent> void processRequest(String message, Request<T> request,
+                Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
+            AbstractScene.this.processRequest(message, request, onSuccess, onException, onError);
+        }
+
+        public <T> void processRequest(String message, CompletableFuture<T> request,
+                Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
+            AbstractScene.this.processRequest(message, request, onSuccess, onError);
+        }
+
+        public final <T> void processRequest(String message, CompletableFuture<T> request,
                 Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
             AbstractScene.this.processRequest(message, request, onSuccess, onException, onError);
         }

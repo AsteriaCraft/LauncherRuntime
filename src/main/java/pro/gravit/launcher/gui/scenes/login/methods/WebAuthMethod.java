@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import pro.gravit.launcher.core.api.method.details.AuthWebDetails;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.overlays.AbstractOverlay;
@@ -18,7 +19,7 @@ import pro.gravit.utils.helper.LogHelper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class WebAuthMethod extends AbstractAuthMethod<AuthWebViewDetails> {
+public class WebAuthMethod extends AbstractAuthMethod<AuthWebDetails> {
     WebAuthOverlay overlay;
     private final JavaFXApplication application;
     private final LoginScene.LoginSceneAccessor accessor;
@@ -41,7 +42,7 @@ public class WebAuthMethod extends AbstractAuthMethod<AuthWebViewDetails> {
     }
 
     @Override
-    public CompletableFuture<Void> show(AuthWebViewDetails details) {
+    public CompletableFuture<Void> show(AuthWebDetails details) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         try {
             accessor.showOverlay(overlay, (e) -> future.complete(null));
@@ -52,9 +53,9 @@ public class WebAuthMethod extends AbstractAuthMethod<AuthWebViewDetails> {
     }
 
     @Override
-    public CompletableFuture<AuthFlow.LoginAndPasswordResult> auth(AuthWebViewDetails details) {
+    public CompletableFuture<AuthFlow.LoginAndPasswordResult> auth(AuthWebDetails details) {
         overlay.future = new CompletableFuture<>();
-        overlay.follow(details.url, details.redirectUrl, (r) -> {
+        overlay.follow(details.url(), details.redirectUrl(), (r) -> {
             LogHelper.dev("Redirect uri: %s", r);
             overlay.future.complete(new AuthFlow.LoginAndPasswordResult(null, new AuthCodePassword(r)));
         });

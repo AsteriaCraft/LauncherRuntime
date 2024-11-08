@@ -6,13 +6,15 @@ import pro.gravit.launcher.base.request.Request;
 import pro.gravit.launcher.base.request.RequestException;
 import pro.gravit.launcher.base.request.auth.AuthRequest;
 import pro.gravit.launcher.base.request.auth.RefreshTokenRequest;
-import pro.gravit.launcher.base.request.auth.details.AuthLoginOnlyDetails;
-import pro.gravit.launcher.base.request.auth.details.AuthPasswordDetails;
-import pro.gravit.launcher.base.request.auth.details.AuthTotpDetails;
-import pro.gravit.launcher.base.request.auth.details.AuthWebViewDetails;
 import pro.gravit.launcher.base.request.auth.password.Auth2FAPassword;
 import pro.gravit.launcher.base.request.auth.password.AuthMultiPassword;
 import pro.gravit.launcher.base.request.auth.password.AuthOAuthPassword;
+import pro.gravit.launcher.core.api.method.AuthMethod;
+import pro.gravit.launcher.core.api.method.AuthMethodDetails;
+import pro.gravit.launcher.core.api.method.details.AuthLoginOnlyDetails;
+import pro.gravit.launcher.core.api.method.details.AuthPasswordDetails;
+import pro.gravit.launcher.core.api.method.details.AuthTotpDetails;
+import pro.gravit.launcher.core.api.method.details.AuthWebDetails;
 import pro.gravit.launcher.gui.scenes.login.methods.*;
 import pro.gravit.utils.helper.LogHelper;
 
@@ -24,12 +26,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class AuthFlow {
-    public Map<Class<? extends GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails>, AbstractAuthMethod<? extends GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails>> authMethods = new HashMap<>(
+    public Map<Class<? extends AuthMethodDetails>, AbstractAuthMethod<? extends AuthMethodDetails>> authMethods = new HashMap<>(
             8);
     private final LoginScene.LoginSceneAccessor accessor;
     private final List<Integer> authFlow = new ArrayList<>();
-    private GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability;
-    private volatile AbstractAuthMethod<GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails> authMethodOnShow;
+    private AuthMethod authAvailability;
+    private volatile AbstractAuthMethod<AuthMethodDetails> authMethodOnShow;
     private final Consumer<SuccessAuth> onSuccessAuth;
     public boolean isLoginStarted;
 
@@ -37,12 +39,12 @@ public class AuthFlow {
         this.accessor = accessor;
         this.onSuccessAuth = onSuccessAuth;
         authMethods.put(AuthPasswordDetails.class, new LoginAndPasswordAuthMethod(accessor));
-        authMethods.put(AuthWebViewDetails.class, new WebAuthMethod(accessor));
+        authMethods.put(AuthWebDetails.class, new WebAuthMethod(accessor));
         authMethods.put(AuthTotpDetails.class, new TotpAuthMethod(accessor));
         authMethods.put(AuthLoginOnlyDetails.class, new LoginOnlyAuthMethod(accessor));
     }
 
-    public void init(GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability) {
+    public void init(AuthMethod authAvailability) {
         this.authAvailability = authAvailability;
         reset();
     }
@@ -74,8 +76,8 @@ public class AuthFlow {
             authFuture.complete(new LoginAndPasswordResult(resentLogin, resentPassword));
         }
         for (int i : authFlow) {
-            GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails details = authAvailability.details.get(i);
-            final AbstractAuthMethod<GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails> authMethod = detailsToMethod(
+            var details = authAvailability.getDetails().get(i);
+            final var authMethod = detailsToMethod(
                     details);
             if (authFuture == null) authFuture = authMethod.show(details).thenCompose((x) -> {
                 authMethodOnShow = authMethod;
@@ -125,7 +127,7 @@ public class AuthFlow {
         return authFuture;
     }
 
-    public AbstractAuthMethod<GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails> getAuthMethodOnShow() {
+    public AbstractAuthMethod<AuthMethodDetails> getAuthMethodOnShow() {
         return authMethodOnShow;
     }
 
@@ -152,11 +154,11 @@ public class AuthFlow {
 
 
     private void login(String login, AuthRequest.AuthPasswordInterface password,
-            GetAvailabilityAuthRequestEvent.AuthAvailability authId, CompletableFuture<SuccessAuth> result) {
+            AuthMethod authId, CompletableFuture<SuccessAuth> result) {
         isLoginStarted = true;
         var application = accessor.getApplication();
         LogHelper.dev("Auth with %s password ***** authId %s", login, authId);
-        AuthRequest authRequest = application.authService.makeAuthRequest(login, password, authId.name);
+        AuthRequest authRequest = application.authService.makeAuthRequest(login, password, authId.getName());
         accessor.processing(authRequest, application.getTranslation("runtime.overlay.processing.text.auth"),
                             (event) -> result.complete(new SuccessAuth(event, login, password)), (error) -> {
                     if (error.equals(AuthRequestEvent.OAUTH_TOKEN_INVALID)) {
@@ -205,14 +207,14 @@ public class AuthFlow {
 
     private boolean tryOAuthLogin() {
         var application = accessor.getApplication();
-        if (application.runtimeSettings.lastAuth != null && authAvailability.name.equals(
-                application.runtimeSettings.lastAuth.name) && application.runtimeSettings.oauthAccessToken != null) {
+        if (application.runtimeSettings.lastAuth != null && authAvailability.getName().equals(
+                application.runtimeSettings.lastAuth.getName()) && application.runtimeSettings.oauthAccessToken != null) {
             if (application.runtimeSettings.oauthExpire != 0
                     && application.runtimeSettings.oauthExpire < System.currentTimeMillis()) {
                 refreshToken();
                 return true;
             }
-            Request.setOAuth(authAvailability.name,
+            Request.setOAuth(authAvailability.getName(),
                              new AuthRequestEvent.OAuthRequestEvent(application.runtimeSettings.oauthAccessToken,
                                                                     application.runtimeSettings.oauthRefreshToken,
                                                                     application.runtimeSettings.oauthExpire),
@@ -227,7 +229,7 @@ public class AuthFlow {
 
     private void refreshToken() {
         var application = accessor.getApplication();
-        RefreshTokenRequest request = new RefreshTokenRequest(authAvailability.name,
+        RefreshTokenRequest request = new RefreshTokenRequest(authAvailability.getName(),
                                                               application.runtimeSettings.oauthRefreshToken);
         accessor.processing(request, application.getTranslation("runtime.overlay.processing.text.auth"), (result) -> {
             application.runtimeSettings.oauthAccessToken = result.oauth.accessToken;
@@ -235,7 +237,7 @@ public class AuthFlow {
             application.runtimeSettings.oauthExpire = result.oauth.expire == 0
                     ? 0
                     : System.currentTimeMillis() + result.oauth.expire;
-            Request.setOAuth(authAvailability.name, result.oauth);
+            Request.setOAuth(authAvailability.getName(), result.oauth);
             AuthOAuthPassword password = new AuthOAuthPassword(application.runtimeSettings.oauthAccessToken);
             LogHelper.info("Login with OAuth AccessToken");
             loginWithOAuth(password, authAvailability, false);
@@ -247,9 +249,9 @@ public class AuthFlow {
     }
 
     private void loginWithOAuth(AuthOAuthPassword password,
-            GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability, boolean refreshIfError) {
+            AuthMethod authAvailability, boolean refreshIfError) {
         var application = accessor.getApplication();
-        AuthRequest authRequest = application.authService.makeAuthRequest(null, password, authAvailability.name);
+        AuthRequest authRequest = application.authService.makeAuthRequest(null, password, authAvailability.getName());
         accessor.processing(authRequest, application.getTranslation("runtime.overlay.processing.text.auth"),
                             (result) -> accessor.runInFxThread(
                                     () -> onSuccessAuth.accept(new SuccessAuth(result, null, null))),
@@ -270,9 +272,9 @@ public class AuthFlow {
 
 
     @SuppressWarnings("unchecked")
-    private AbstractAuthMethod<GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails> detailsToMethod(
-            GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails details) {
-        return (AbstractAuthMethod<GetAvailabilityAuthRequestEvent.AuthAvailabilityDetails>) authMethods.get(
+    private AbstractAuthMethod<AuthMethodDetails> detailsToMethod(
+            AuthMethodDetails details) {
+        return (AbstractAuthMethod<AuthMethodDetails>) authMethods.get(
                 details.getClass());
     }
 

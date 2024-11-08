@@ -6,6 +6,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import pro.gravit.launcher.client.events.ClientExitPhase;
+import pro.gravit.launcher.core.api.LauncherAPIHolder;
+import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.gui.StdJavaRuntimeProvider;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
@@ -28,17 +30,18 @@ import pro.gravit.utils.helper.LogHelper;
 
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LoginScene extends AbstractScene {
-    private List<GetAvailabilityAuthRequestEvent.AuthAvailability> auth; //TODO: FIX? Field is assigned but never accessed.
+    private List<AuthMethod> auth; //TODO: FIX? Field is assigned but never accessed.
     private CheckBox savePasswordCheckBox;
     private CheckBox autoenter;
     private Pane content;
     private AbstractVisualComponent contentComponent;
     private LoginAuthButtonComponent authButton;
-    private ComboBox<GetAvailabilityAuthRequestEvent.AuthAvailability> authList;
-    private GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability;
+    private ComboBox<AuthMethod> authList;
+    private AuthMethod authAvailability;
     private final AuthFlow authFlow;
 
     public LoginScene(JavaFXApplication application) {
@@ -96,15 +99,14 @@ public class LoginScene extends AbstractScene {
     }
 
     private void launcherRequest() {
-        LauncherRequest launcherRequest = new LauncherRequest();
-        processRequest(application.getTranslation("runtime.overlay.processing.text.launcher"), launcherRequest,
+        processRequest(application.getTranslation("runtime.overlay.processing.text.launcher"), LauncherAPIHolder.core().checkUpdates(),
                        (result) -> {
-                           if (result.needUpdate) {
+                           if (result.required()) {
                                try {
                                    LogHelper.debug("Start update processing");
                                    disable();
                                    StdJavaRuntimeProvider.updatePath = LauncherUpdater.prepareUpdate(
-                                           new URI(result.url).toURL());
+                                           new URI(result.url()).toURL());
                                    LogHelper.debug("Exit with Platform.exit");
                                    Platform.exit();
                                    return;
@@ -125,29 +127,28 @@ public class LoginScene extends AbstractScene {
     }
 
     private void getAvailabilityAuth() {
-        GetAvailabilityAuthRequest getAvailabilityAuthRequest = new GetAvailabilityAuthRequest();
-        processing(getAvailabilityAuthRequest,
+        processing(LauncherAPIHolder.core().getAuthMethods(),
                    application.getTranslation("runtime.overlay.processing.text.authAvailability"),
                    (auth) -> contextHelper.runInFxThread(() -> {
-                       this.auth = auth.list;
-                       authList.setVisible(auth.list.size() != 1);
-                       authList.setManaged(auth.list.size() != 1);
-                       for (GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability : auth.list) {
-                           if (!authAvailability.visible) {
+                       this.auth = auth;
+                       authList.setVisible(auth.size() != 1);
+                       authList.setManaged(auth.size() != 1);
+                       for (var authAvailability : auth) {
+                           if (!authAvailability.isVisible()) {
                                continue;
                            }
                            if (application.runtimeSettings.lastAuth == null) {
-                               if (authAvailability.name.equals("std") || this.authAvailability == null) {
+                               if (authAvailability.getName().equals("std") || this.authAvailability == null) {
                                    changeAuthAvailability(authAvailability);
                                }
-                           } else if (authAvailability.name.equals(application.runtimeSettings.lastAuth.name))
+                           } else if (authAvailability.getName().equals(application.runtimeSettings.lastAuth.getName()))
                                changeAuthAvailability(authAvailability);
-                           if(authAvailability.visible) {
+                           if(authAvailability.isVisible()) {
                                addAuthAvailability(authAvailability);
                            }
                        }
-                       if (this.authAvailability == null && !auth.list.isEmpty()) {
-                           changeAuthAvailability(auth.list.get(0));
+                       if (this.authAvailability == null && !auth.isEmpty()) {
+                           changeAuthAvailability(auth.get(0));
                        }
                        runAutoAuth();
                    }), null);
@@ -159,21 +160,27 @@ public class LoginScene extends AbstractScene {
         }
     }
 
-    public void changeAuthAvailability(GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability) {
+    public void changeAuthAvailability(AuthMethod authAvailability) {
         boolean isChanged = this.authAvailability != authAvailability; //TODO: FIX
         this.authAvailability = authAvailability;
         this.application.authService.setAuthAvailability(authAvailability);
         this.authList.selectionModelProperty().get().select(authAvailability);
         authFlow.init(authAvailability);
-        LogHelper.info("Selected auth: %s", authAvailability.name);
+        LogHelper.info("Selected auth: %s", authAvailability.getName());
     }
 
-    public void addAuthAvailability(GetAvailabilityAuthRequestEvent.AuthAvailability authAvailability) {
+    public void addAuthAvailability(AuthMethod authAvailability) {
         authList.getItems().add(authAvailability);
-        LogHelper.info("Added %s: %s", authAvailability.name, authAvailability.displayName);
+        LogHelper.info("Added %s: %s", authAvailability.getName(), authAvailability.getDisplayName());
     }
 
+    @Deprecated
     public <T extends WebSocketEvent> void processing(Request<T> request, String text, Consumer<T> onSuccess,
+            Consumer<String> onError) {
+        processRequest(text, request, onSuccess, (thr) -> onError.accept(thr.getCause().getMessage()), null);
+    }
+
+    public <T> void processing(CompletableFuture<T> request, String text, Consumer<T> onSuccess,
             Consumer<String> onError) {
         processRequest(text, request, onSuccess, (thr) -> onError.accept(thr.getCause().getMessage()), null);
     }
@@ -199,14 +206,14 @@ public class LoginScene extends AbstractScene {
         if (password instanceof Auth2FAPassword) return false;
         if (password instanceof AuthMultiPassword) return false;
         return authAvailability != null
-                && authAvailability.details != null
-                && !authAvailability.details.isEmpty()
-                && authAvailability.details.get(0) instanceof AuthPasswordDetails;
+                && authAvailability.getDetails() != null
+                && !authAvailability.getDetails().isEmpty()
+                && authAvailability.getDetails().get(0) instanceof AuthPasswordDetails;
     }
 
     public void onSuccessLogin(AuthFlow.SuccessAuth successAuth) {
         AuthRequestEvent result = successAuth.requestEvent();
-        application.authService.setAuthResult(authAvailability.name, result);
+        application.authService.setAuthResult(authAvailability.getName(), result);
         boolean savePassword = savePasswordCheckBox.isSelected();
         if (savePassword) {
             application.runtimeSettings.login = successAuth.recentLogin();
@@ -277,10 +284,10 @@ public class LoginScene extends AbstractScene {
         return authFlow;
     }
 
-    private static class AuthAvailabilityStringConverter extends StringConverter<GetAvailabilityAuthRequestEvent.AuthAvailability> {
+    private static class AuthAvailabilityStringConverter extends StringConverter<AuthMethod> {
         @Override
-        public String toString(GetAvailabilityAuthRequestEvent.AuthAvailability object) {
-            return object == null ? "null" : object.displayName;
+        public String toString(AuthMethod object) {
+            return object == null ? "null" : object.getDisplayName();
         }
 
         @Override
