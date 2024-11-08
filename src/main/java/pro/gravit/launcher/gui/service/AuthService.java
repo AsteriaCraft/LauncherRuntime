@@ -5,6 +5,7 @@ import pro.gravit.launcher.base.LauncherConfig;
 import pro.gravit.launcher.core.api.features.AuthFeatureAPI;
 import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.core.api.method.AuthMethodPassword;
+import pro.gravit.launcher.core.api.model.SelfUser;
 import pro.gravit.launcher.core.api.model.User;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.base.events.request.AuthRequestEvent;
@@ -21,7 +22,7 @@ import java.util.List;
 public class AuthService {
     private final LauncherConfig config = Launcher.getConfig();
     private final JavaFXApplication application;
-    private AuthFeatureAPI.AuthResponse rawAuthResult;
+    private SelfUser user;
     private AuthMethod authAvailability;
 
     public AuthService(JavaFXApplication application) {
@@ -42,8 +43,8 @@ public class AuthService {
         return SecurityHelper.encrypt(Launcher.getConfig().passwordEncryptKey, password);
     }
 
-    public void setAuthResult(String authId, AuthFeatureAPI.AuthResponse rawAuthResult) {
-        this.rawAuthResult = rawAuthResult;
+    public void setUser(SelfUser user) {
+        this.user = user;
     }
 
     public void setAuthAvailability(AuthMethod info) {
@@ -59,8 +60,8 @@ public class AuthService {
     }
 
     public String getUsername() {
-        if (rawAuthResult == null || rawAuthResult.user() == null) return "Player";
-        return rawAuthResult.user().getUsername();
+        if (user == null) return "Player";
+        return user.getUsername();
     }
 
     public String getMainRole() {
@@ -68,10 +69,10 @@ public class AuthService {
     }
 
     public boolean checkPermission(String name) {
-        if (rawAuthResult == null || rawAuthResult.user().getPermissions() == null) {
+        if (user == null || user.getPermissions() == null) {
             return false;
         }
-        return rawAuthResult.user().getPermissions().hasPerm(name);
+        return user.getPermissions().hasPerm(name);
     }
 
     public boolean checkDebugPermission(String name) {
@@ -80,17 +81,12 @@ public class AuthService {
     }
 
     public User getPlayerProfile() {
-        if (rawAuthResult == null) return null;
-        return rawAuthResult.user();
-    }
-
-    public String getAccessToken() {
-        if (rawAuthResult == null) return null;
-        return rawAuthResult.authToken().getAccessToken();
+        if (user == null) return null;
+        return user;
     }
 
     public void exit() {
-        rawAuthResult = null;
+        user = null;
         //.profile = null;
     }
 }

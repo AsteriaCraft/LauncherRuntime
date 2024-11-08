@@ -10,6 +10,7 @@ import pro.gravit.launcher.core.api.LauncherAPIHolder;
 import pro.gravit.launcher.core.api.features.AuthFeatureAPI;
 import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.core.api.model.Texture;
+import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.StdJavaRuntimeProvider;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
@@ -63,9 +64,6 @@ public class LoginScene extends AbstractScene {
         authButton = new LoginAuthButtonComponent(LookupHelper.lookup(layout, "#authButton"), application,
                                                   (e) -> contextHelper.runCallback(authFlow::loginWithGui));
         savePasswordCheckBox = LookupHelper.lookup(layout, "#savePassword");
-        if (application.runtimeSettings.password != null || application.runtimeSettings.oauthAccessToken != null) {
-            LookupHelper.<CheckBox>lookup(layout, "#savePassword").setSelected(true);
-        }
         autoenter = LookupHelper.lookup(layout, "#autoenter");
         autoenter.setSelected(application.runtimeSettings.autoAuth);
         autoenter.setOnAction((event) -> application.runtimeSettings.autoAuth = autoenter.isSelected());
@@ -88,50 +86,42 @@ public class LoginScene extends AbstractScene {
 
     @Override
     protected void doPostInit() {
-
-        if (!application.isDebugMode()) {
-            // we would like to wait till launcher request success before start availability auth.
-            // otherwise it will try to access same vars same time, and this causes a lot of multi-thread based errors
-            // launcherRequest().finally(getAvailabilityAuth().finally(postInit()))
-            launcherRequest();
-        } else {
-            getAvailabilityAuth();
-        }
+        getAvailabilityAuth();
     }
 
-    private void launcherRequest() {
-        processRequest(application.getTranslation("runtime.overlay.processing.text.launcher"), LauncherAPIHolder.core().checkUpdates(),
-                       (result) -> {
-                           if (result.required()) {
-                               try {
-                                   LogHelper.debug("Start update processing");
-                                   disable();
-                                   StdJavaRuntimeProvider.updatePath = LauncherUpdater.prepareUpdate(
-                                           new URI(result.url()).toURL());
-                                   LogHelper.debug("Exit with Platform.exit");
-                                   Platform.exit();
-                                   return;
-                               } catch (Throwable e) {
-                                   contextHelper.runInFxThread(() -> errorHandle(e));
-                                   try {
-                                       Thread.sleep(1500);
-                                       LauncherEngine.modulesManager.invokeEvent(new ClientExitPhase(0));
-                                       Platform.exit();
-                                   } catch (Throwable ex) {
-                                       LauncherEngine.exitLauncher(0);
-                                   }
-                               }
-                           }
-                           LogHelper.dev("Launcher update processed");
-                           getAvailabilityAuth();
-                       }, (event) -> LauncherEngine.exitLauncher(0));
-    }
+//    private void launcherRequest() {
+//        processRequest(application.getTranslation("runtime.overlay.processing.text.launcher"), LauncherAPIHolder.core().checkUpdates(),
+//                       (result) -> {
+//                           if (result.required()) {
+//                               try {
+//                                   LogHelper.debug("Start update processing");
+//                                   disable();
+//                                   StdJavaRuntimeProvider.updatePath = LauncherUpdater.prepareUpdate(
+//                                           new URI(result.url()).toURL());
+//                                   LogHelper.debug("Exit with Platform.exit");
+//                                   Platform.exit();
+//                                   return;
+//                               } catch (Throwable e) {
+//                                   contextHelper.runInFxThread(() -> errorHandle(e));
+//                                   try {
+//                                       Thread.sleep(1500);
+//                                       LauncherEngine.modulesManager.invokeEvent(new ClientExitPhase(0));
+//                                       Platform.exit();
+//                                   } catch (Throwable ex) {
+//                                       LauncherEngine.exitLauncher(0);
+//                                   }
+//                               }
+//                           }
+//                           LogHelper.dev("Launcher update processed");
+//                           getAvailabilityAuth();
+//                       }, (event) -> LauncherEngine.exitLauncher(0));
+//    }
 
     private void getAvailabilityAuth() {
-        processing(LauncherAPIHolder.core().getAuthMethods(),
-                   application.getTranslation("runtime.overlay.processing.text.authAvailability"),
-                   (auth) -> contextHelper.runInFxThread(() -> {
-                       this.auth = auth;
+        processing(LauncherBackendAPIHolder.getApi().init(),
+                   application.getTranslation("runtime.overlay.processing.text.launcher"),
+                   (initData) -> contextHelper.runInFxThread(() -> {
+                       this.auth = initData.methods();
                        authList.setVisible(auth.size() != 1);
                        authList.setManaged(auth.size() != 1);
                        for (var authAvailability : auth) {
@@ -163,7 +153,7 @@ public class LoginScene extends AbstractScene {
 
     public void changeAuthAvailability(AuthMethod authAvailability) {
         boolean isChanged = this.authAvailability != authAvailability; //TODO: FIX
-        LauncherAPIHolder.changeAuthId(authAvailability.getName());
+        LauncherBackendAPIHolder.getApi().selectAuthMethod(authAvailability);
         this.authAvailability = authAvailability;
         this.application.authService.setAuthAvailability(authAvailability);
         this.authList.selectionModelProperty().get().select(authAvailability);
@@ -205,27 +195,24 @@ public class LoginScene extends AbstractScene {
     }
 
     public void onSuccessLogin(AuthFlow.SuccessAuth successAuth) {
-        AuthFeatureAPI.AuthResponse result = successAuth.requestEvent();
-        application.authService.setAuthResult(authAvailability.getName(), result);
+        var user = successAuth.user();
+        application.authService.setUser(user);
         boolean savePassword = savePasswordCheckBox.isSelected();
         if (savePassword) {
             application.runtimeSettings.login = successAuth.recentLogin();
-            application.runtimeSettings.oauthAccessToken = result.authToken().getAccessToken();
-            application.runtimeSettings.oauthRefreshToken = result.authToken().getRefreshToken();
-            application.runtimeSettings.oauthExpire = Request.getTokenExpiredTime(); // TODO
             application.runtimeSettings.password = null;
             application.runtimeSettings.lastAuth = authAvailability;
         }
-        if (result.user() != null
-                && result.user().getAssets() != null) {
+        if (user != null
+                && user.getAssets() != null) {
             try {
-                Texture skin = result.user().getAssets().get("SKIN");
-                Texture avatar = result.user().getAssets().get("AVATAR");
+                Texture skin = user.getAssets().get("SKIN");
+                Texture avatar = user.getAssets().get("AVATAR");
                 if(skin != null || avatar != null) {
-                    application.skinManager.addSkinWithAvatar(result.user().getUsername(),
+                    application.skinManager.addSkinWithAvatar(user.getUsername(),
                                                               skin != null ? new URI(skin.getUrl()) : null,
                                                               avatar != null ? new URI(avatar.getUrl()) : null);
-                    application.skinManager.getSkin(result.user().getUsername()); //Cache skin
+                    application.skinManager.getSkin(user.getUsername()); //Cache skin
                 }
             } catch (Exception e) {
                 LogHelper.error(e);
@@ -265,8 +252,6 @@ public class LoginScene extends AbstractScene {
     public void clearPassword() {
         application.runtimeSettings.password = null;
         application.runtimeSettings.login = null;
-        application.runtimeSettings.oauthAccessToken = null;
-        application.runtimeSettings.oauthRefreshToken = null;
     }
 
     public AuthFlow getAuthFlow() {

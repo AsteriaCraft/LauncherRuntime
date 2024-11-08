@@ -36,12 +36,6 @@ public class RuntimeSettings extends UserSettings {
     @LauncherNetworkAPI
     public volatile LAUNCHER_LOCALE locale;
     @LauncherNetworkAPI
-    public String oauthAccessToken;
-    @LauncherNetworkAPI
-    public String oauthRefreshToken;
-    @LauncherNetworkAPI
-    public long oauthExpire;
-    @LauncherNetworkAPI
     public volatile LAUNCHER_THEME theme = LAUNCHER_THEME.COMMON;
     @LauncherNetworkAPI
     public Map<UUID, ProfileSettings> profileSettings = new HashMap<>();

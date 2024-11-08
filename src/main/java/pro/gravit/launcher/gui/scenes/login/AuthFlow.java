@@ -19,6 +19,9 @@ import pro.gravit.launcher.core.api.method.details.AuthPasswordDetails;
 import pro.gravit.launcher.core.api.method.details.AuthTotpDetails;
 import pro.gravit.launcher.core.api.method.details.AuthWebDetails;
 import pro.gravit.launcher.core.api.method.password.AuthChainPassword;
+import pro.gravit.launcher.core.api.model.SelfUser;
+import pro.gravit.launcher.core.api.model.User;
+import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.scenes.login.methods.*;
 import pro.gravit.utils.helper.LogHelper;
 
@@ -154,11 +157,9 @@ public class AuthFlow {
         isLoginStarted = true;
         var application = accessor.getApplication();
         LogHelper.dev("Auth with %s password ***** authId %s", login, authId);
-        accessor.processing(LauncherAPIHolder.auth().auth(login, password), application.getTranslation("runtime.overlay.processing.text.auth"),
+        accessor.processing(LauncherBackendAPIHolder.getApi().authorize(login, password), application.getTranslation("runtime.overlay.processing.text.auth"),
                             (event) -> result.complete(new SuccessAuth(event, login, password)), (error) -> {
                     if (error.equals(AuthRequestEvent.OAUTH_TOKEN_INVALID)) {
-                        application.runtimeSettings.oauthAccessToken = null;
-                        application.runtimeSettings.oauthRefreshToken = null;
                         result.completeExceptionally(new RequestException(error));
                     } else if (error.equals(AuthRequestEvent.TWO_FACTOR_NEED_ERROR_MESSAGE)) {
                         authFlow.clear();
@@ -202,63 +203,16 @@ public class AuthFlow {
 
     private boolean tryOAuthLogin() {
         var application = accessor.getApplication();
-        if (application.runtimeSettings.lastAuth != null && authAvailability.getName().equals(
-                application.runtimeSettings.lastAuth.getName()) && application.runtimeSettings.oauthAccessToken != null) {
-            if (application.runtimeSettings.oauthExpire != 0
-                    && application.runtimeSettings.oauthExpire < System.currentTimeMillis()) {
-                refreshToken();
-                return true;
-            }
-            Request.setOAuth(authAvailability.getName(),
-                             new AuthRequestEvent.OAuthRequestEvent(application.runtimeSettings.oauthAccessToken,
-                                                                    application.runtimeSettings.oauthRefreshToken,
-                                                                    application.runtimeSettings.oauthExpire),
-                             application.runtimeSettings.oauthExpire);
-            AuthOAuthPassword password = new AuthOAuthPassword(application.runtimeSettings.oauthAccessToken);
-            LogHelper.info("Login with OAuth AccessToken");
-            loginWithOAuth(password, authAvailability, true);
-            return true;
-        }
-        return false;
-    }
-
-    private void refreshToken() {
-        var application = accessor.getApplication();
-        accessor.processing(LauncherAPIHolder.auth().refreshToken(application.runtimeSettings.oauthRefreshToken), application.getTranslation("runtime.overlay.processing.text.auth"), (result) -> {
-            application.runtimeSettings.oauthAccessToken = result.getAccessToken();
-            application.runtimeSettings.oauthRefreshToken = result.getRefreshToken();
-            application.runtimeSettings.oauthExpire = result.getExpire() == 0
-                    ? 0
-                    : System.currentTimeMillis() + result.getExpire();
-            AuthOAuthPassword password = new AuthOAuthPassword(application.runtimeSettings.oauthAccessToken);
-            LogHelper.info("Login with OAuth AccessToken");
-            loginWithOAuth(password, authAvailability, false);
-        }, (error) -> {
-            application.runtimeSettings.oauthAccessToken = null;
-            application.runtimeSettings.oauthRefreshToken = null;
-            accessor.runInFxThread(this::loginWithGui);
-        });
-    }
-
-    private void loginWithOAuth(AuthOAuthPassword password,
-            AuthMethod authAvailability, boolean refreshIfError) {
-        var application = accessor.getApplication();
-        accessor.processing(LauncherAPIHolder.auth().auth(null, password), application.getTranslation("runtime.overlay.processing.text.auth"),
+        accessor.processing(LauncherBackendAPIHolder.getApi().tryAuthorize(), application.getTranslation("runtime.overlay.processing.text.auth"),
                             (result) -> accessor.runInFxThread(
                                     () -> onSuccessAuth.accept(new SuccessAuth(result, null, null))),
                             (error) -> {
-                                if (refreshIfError && error.equals(AuthRequestEvent.OAUTH_TOKEN_EXPIRE)) {
-                                    refreshToken();
-                                    return;
-                                }
                                 if (error.equals(AuthRequestEvent.OAUTH_TOKEN_INVALID)) {
-                                    application.runtimeSettings.oauthAccessToken = null;
-                                    application.runtimeSettings.oauthRefreshToken = null;
                                     accessor.runInFxThread(this::loginWithGui);
                                 } else {
-                                    accessor.errorHandle(new RequestException(error));
                                 }
                             });
+        return false;
     }
 
 
@@ -276,7 +230,7 @@ public class AuthFlow {
     public record LoginAndPasswordResult(String login, AuthMethodPassword password) {
     }
 
-    public record SuccessAuth(AuthFeatureAPI.AuthResponse requestEvent, String recentLogin,
+    public record SuccessAuth(SelfUser user, String recentLogin,
                               AuthMethodPassword recentPassword) {
     }
 }

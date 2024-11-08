@@ -3,6 +3,7 @@ package pro.gravit.launcher.gui;
 import javafx.stage.Stage;
 import pro.gravit.launcher.client.events.ClientExitPhase;
 import pro.gravit.launcher.client.events.ClientUnlockConsoleEvent;
+import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.service.OfflineService;
 import pro.gravit.launcher.runtime.LauncherEngine;
 import pro.gravit.launcher.runtime.client.events.ClientEngineInitPhase;
@@ -138,6 +139,9 @@ public class JavaRuntimeModule extends LauncherModule {
     }
 
     private void exitPhase(ClientExitPhase exitPhase) {
+        if(LauncherBackendAPIHolder.getApi() != null) {
+            LauncherBackendAPIHolder.getApi().shutdown();
+        }
         if (provider != null && provider instanceof StdJavaRuntimeProvider stdJavaRuntimeProvider) {
             try {
                 stdJavaRuntimeProvider.getApplication().saveSettings();

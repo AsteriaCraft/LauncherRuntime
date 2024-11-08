@@ -9,6 +9,7 @@ import javafx.stage.StageStyle;
 import pro.gravit.launcher.base.*;
 import pro.gravit.launcher.client.api.DialogService;
 import pro.gravit.launcher.client.events.ClientExitPhase;
+import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.core.backend.UserSettings;
 import pro.gravit.launcher.gui.commands.RuntimeCommand;
 import pro.gravit.launcher.gui.commands.VersionCommand;
@@ -70,6 +71,7 @@ public class JavaFXApplication extends Application {
     public JavaService javaService;
     public PingService pingService;
     public OfflineService offlineService;
+    public BackendCallbackService backendCallbackService;
     public TriggerManager triggerManager;
     private SettingsManager settingsManager;
     private PrimaryStage mainStage;
@@ -120,6 +122,8 @@ public class JavaFXApplication extends Application {
         javaService = new JavaService(this);
         offlineService = new OfflineService(this);
         pingService = new PingService();
+        backendCallbackService = new BackendCallbackService();
+        LauncherBackendAPIHolder.getApi().setCallback(backendCallbackService);
         registerCommands();
     }
 
