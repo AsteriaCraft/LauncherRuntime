@@ -2,7 +2,10 @@ package pro.gravit.launcher.gui.service;
 
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
+import pro.gravit.launcher.core.api.features.AuthFeatureAPI;
 import pro.gravit.launcher.core.api.method.AuthMethod;
+import pro.gravit.launcher.core.api.method.AuthMethodPassword;
+import pro.gravit.launcher.core.api.model.User;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.base.events.request.AuthRequestEvent;
 import pro.gravit.launcher.base.events.request.GetAvailabilityAuthRequestEvent;
@@ -18,14 +21,14 @@ import java.util.List;
 public class AuthService {
     private final LauncherConfig config = Launcher.getConfig();
     private final JavaFXApplication application;
-    private AuthRequestEvent rawAuthResult;
+    private AuthFeatureAPI.AuthResponse rawAuthResult;
     private AuthMethod authAvailability;
 
     public AuthService(JavaFXApplication application) {
         this.application = application;
     }
 
-    public AuthRequest.AuthPasswordInterface makePassword(String plainPassword) {
+    public AuthMethodPassword makePassword(String plainPassword) {
         if (config.passwordEncryptKey != null) {
             try {
                 return new AuthAESPassword(encryptAESPassword(plainPassword));
@@ -35,60 +38,12 @@ public class AuthService {
         return new AuthPlainPassword(plainPassword);
     }
 
-    public AuthRequest.AuthPasswordInterface make2FAPassword(AuthRequest.AuthPasswordInterface firstPassword,
-            String totp) {
-        Auth2FAPassword auth2FAPassword = new Auth2FAPassword();
-        auth2FAPassword.firstPassword = firstPassword;
-        auth2FAPassword.secondPassword = new AuthTOTPPassword();
-        ((AuthTOTPPassword) auth2FAPassword.secondPassword).totp = totp;
-        return auth2FAPassword;
-    }
-
-    public List<AuthRequest.AuthPasswordInterface> getListFromPassword(AuthRequest.AuthPasswordInterface password) {
-        if (password instanceof Auth2FAPassword auth2FAPassword) {
-            List<AuthRequest.AuthPasswordInterface> list = new ArrayList<>();
-            list.add(auth2FAPassword.firstPassword);
-            list.add(auth2FAPassword.secondPassword);
-            return list;
-        } else if (password instanceof AuthMultiPassword authMultiPassword) {
-            return authMultiPassword.list;
-        } else {
-            List<AuthRequest.AuthPasswordInterface> list = new ArrayList<>(1);
-            list.add(password);
-            return list;
-        }
-    }
-
-    public AuthRequest.AuthPasswordInterface getPasswordFromList(List<AuthRequest.AuthPasswordInterface> password) {
-        if (password.size() == 1) {
-            return password.get(0);
-        }
-        if (password.size() == 2) {
-            Auth2FAPassword pass = new Auth2FAPassword();
-            pass.firstPassword = password.get(0);
-            pass.secondPassword = password.get(1);
-            return pass;
-        }
-        AuthMultiPassword multi = new AuthMultiPassword();
-        multi.list = password;
-        return multi;
-    }
-
-    public AuthRequest makeAuthRequest(String login, AuthRequest.AuthPasswordInterface password, String authId) {
-        return new AuthRequest(login, password, authId, false, application.isDebugMode()
-                ? AuthRequest.ConnectTypes.API
-                : AuthRequest.ConnectTypes.CLIENT);
-    }
-
     private byte[] encryptAESPassword(String password) throws Exception {
         return SecurityHelper.encrypt(Launcher.getConfig().passwordEncryptKey, password);
     }
 
-    public void setAuthResult(String authId, AuthRequestEvent rawAuthResult) {
+    public void setAuthResult(String authId, AuthFeatureAPI.AuthResponse rawAuthResult) {
         this.rawAuthResult = rawAuthResult;
-        if (rawAuthResult.oauth != null) {
-            Request.setOAuth(authId, rawAuthResult.oauth);
-        }
     }
 
     public void setAuthAvailability(AuthMethod info) {
@@ -104,23 +59,19 @@ public class AuthService {
     }
 
     public String getUsername() {
-        if (rawAuthResult == null || rawAuthResult.playerProfile == null) return "Player";
-        return rawAuthResult.playerProfile.username;
+        if (rawAuthResult == null || rawAuthResult.user() == null) return "Player";
+        return rawAuthResult.user().getUsername();
     }
 
     public String getMainRole() {
-        if (rawAuthResult == null
-                || rawAuthResult.permissions == null
-                || rawAuthResult.permissions.getRoles() == null
-                || rawAuthResult.permissions.getRoles().isEmpty()) return "";
-        return rawAuthResult.permissions.getRoles().get(0);
+        return "";
     }
 
     public boolean checkPermission(String name) {
-        if (rawAuthResult == null || rawAuthResult.permissions == null) {
+        if (rawAuthResult == null || rawAuthResult.user().getPermissions() == null) {
             return false;
         }
-        return rawAuthResult.permissions.hasPerm(name);
+        return rawAuthResult.user().getPermissions().hasPerm(name);
     }
 
     public boolean checkDebugPermission(String name) {
@@ -128,14 +79,14 @@ public class AuthService {
                 checkPermission("launcher.debug."+name));
     }
 
-    public PlayerProfile getPlayerProfile() {
+    public User getPlayerProfile() {
         if (rawAuthResult == null) return null;
-        return rawAuthResult.playerProfile;
+        return rawAuthResult.user();
     }
 
     public String getAccessToken() {
         if (rawAuthResult == null) return null;
-        return rawAuthResult.accessToken;
+        return rawAuthResult.authToken().getAccessToken();
     }
 
     public void exit() {

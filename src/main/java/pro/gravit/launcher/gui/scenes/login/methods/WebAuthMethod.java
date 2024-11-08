@@ -7,13 +7,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import pro.gravit.launcher.core.api.method.details.AuthWebDetails;
+import pro.gravit.launcher.core.api.method.password.AuthOAuthPassword;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.overlays.AbstractOverlay;
 import pro.gravit.launcher.gui.scenes.login.AuthFlow;
 import pro.gravit.launcher.gui.scenes.login.LoginScene;
-import pro.gravit.launcher.base.request.auth.details.AuthWebViewDetails;
-import pro.gravit.launcher.base.request.auth.password.AuthCodePassword;
 import pro.gravit.utils.helper.LogHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -57,7 +56,7 @@ public class WebAuthMethod extends AbstractAuthMethod<AuthWebDetails> {
         overlay.future = new CompletableFuture<>();
         overlay.follow(details.url(), details.redirectUrl(), (r) -> {
             LogHelper.dev("Redirect uri: %s", r);
-            overlay.future.complete(new AuthFlow.LoginAndPasswordResult(null, new AuthCodePassword(r)));
+            overlay.future.complete(new AuthFlow.LoginAndPasswordResult(null, new AuthOAuthPassword(r)));
         });
         return overlay.future;
     }

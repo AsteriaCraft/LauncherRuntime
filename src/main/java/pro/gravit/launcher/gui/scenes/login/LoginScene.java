@@ -7,7 +7,9 @@ import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import pro.gravit.launcher.client.events.ClientExitPhase;
 import pro.gravit.launcher.core.api.LauncherAPIHolder;
+import pro.gravit.launcher.core.api.features.AuthFeatureAPI;
 import pro.gravit.launcher.core.api.method.AuthMethod;
+import pro.gravit.launcher.core.api.model.Texture;
 import pro.gravit.launcher.gui.StdJavaRuntimeProvider;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
@@ -17,7 +19,6 @@ import pro.gravit.launcher.runtime.LauncherEngine;
 import pro.gravit.launcher.runtime.utils.LauncherUpdater;
 import pro.gravit.launcher.base.events.request.AuthRequestEvent;
 import pro.gravit.launcher.base.events.request.GetAvailabilityAuthRequestEvent;
-import pro.gravit.launcher.base.profiles.Texture;
 import pro.gravit.launcher.base.request.Request;
 import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.launcher.base.request.auth.AuthRequest;
@@ -162,6 +163,7 @@ public class LoginScene extends AbstractScene {
 
     public void changeAuthAvailability(AuthMethod authAvailability) {
         boolean isChanged = this.authAvailability != authAvailability; //TODO: FIX
+        LauncherAPIHolder.changeAuthId(authAvailability.getName());
         this.authAvailability = authAvailability;
         this.application.authService.setAuthAvailability(authAvailability);
         this.authList.selectionModelProperty().get().select(authAvailability);
@@ -202,41 +204,28 @@ public class LoginScene extends AbstractScene {
         return "login";
     }
 
-    private boolean checkSavePasswordAvailable(AuthRequest.AuthPasswordInterface password) {
-        if (password instanceof Auth2FAPassword) return false;
-        if (password instanceof AuthMultiPassword) return false;
-        return authAvailability != null
-                && authAvailability.getDetails() != null
-                && !authAvailability.getDetails().isEmpty()
-                && authAvailability.getDetails().get(0) instanceof AuthPasswordDetails;
-    }
-
     public void onSuccessLogin(AuthFlow.SuccessAuth successAuth) {
-        AuthRequestEvent result = successAuth.requestEvent();
+        AuthFeatureAPI.AuthResponse result = successAuth.requestEvent();
         application.authService.setAuthResult(authAvailability.getName(), result);
         boolean savePassword = savePasswordCheckBox.isSelected();
         if (savePassword) {
             application.runtimeSettings.login = successAuth.recentLogin();
-            if (result.oauth == null) {
-                LogHelper.warning("Password not saved");
-            } else {
-                application.runtimeSettings.oauthAccessToken = result.oauth.accessToken;
-                application.runtimeSettings.oauthRefreshToken = result.oauth.refreshToken;
-                application.runtimeSettings.oauthExpire = Request.getTokenExpiredTime();
-                application.runtimeSettings.password = null;
-            }
+            application.runtimeSettings.oauthAccessToken = result.authToken().getAccessToken();
+            application.runtimeSettings.oauthRefreshToken = result.authToken().getRefreshToken();
+            application.runtimeSettings.oauthExpire = Request.getTokenExpiredTime(); // TODO
+            application.runtimeSettings.password = null;
             application.runtimeSettings.lastAuth = authAvailability;
         }
-        if (result.playerProfile != null
-                && result.playerProfile.assets != null) {
+        if (result.user() != null
+                && result.user().getAssets() != null) {
             try {
-                Texture skin = result.playerProfile.assets.get("SKIN");
-                Texture avatar = result.playerProfile.assets.get("AVATAR");
+                Texture skin = result.user().getAssets().get("SKIN");
+                Texture avatar = result.user().getAssets().get("AVATAR");
                 if(skin != null || avatar != null) {
-                    application.skinManager.addSkinWithAvatar(result.playerProfile.username,
-                                                              skin != null ? new URI(skin.url) : null,
-                                                              avatar != null ? new URI(avatar.url) : null);
-                    application.skinManager.getSkin(result.playerProfile.username); //Cache skin
+                    application.skinManager.addSkinWithAvatar(result.user().getUsername(),
+                                                              skin != null ? new URI(skin.getUrl()) : null,
+                                                              avatar != null ? new URI(avatar.getUrl()) : null);
+                    application.skinManager.getSkin(result.user().getUsername()); //Cache skin
                 }
             } catch (Exception e) {
                 LogHelper.error(e);
@@ -324,7 +313,13 @@ public class LoginScene extends AbstractScene {
             content.getChildren().clear();
         }
 
+        @Deprecated
         public <T extends WebSocketEvent> void processing(Request<T> request, String text, Consumer<T> onSuccess,
+                Consumer<String> onError) {
+            LoginScene.this.processing(request, text, onSuccess, onError);
+        }
+
+        public <T> void processing(CompletableFuture<T> request, String text, Consumer<T> onSuccess,
                 Consumer<String> onError) {
             LoginScene.this.processing(request, text, onSuccess, onError);
         }

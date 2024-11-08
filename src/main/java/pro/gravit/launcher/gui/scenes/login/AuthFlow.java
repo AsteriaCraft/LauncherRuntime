@@ -9,12 +9,16 @@ import pro.gravit.launcher.base.request.auth.RefreshTokenRequest;
 import pro.gravit.launcher.base.request.auth.password.Auth2FAPassword;
 import pro.gravit.launcher.base.request.auth.password.AuthMultiPassword;
 import pro.gravit.launcher.base.request.auth.password.AuthOAuthPassword;
+import pro.gravit.launcher.core.api.LauncherAPIHolder;
+import pro.gravit.launcher.core.api.features.AuthFeatureAPI;
 import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.core.api.method.AuthMethodDetails;
+import pro.gravit.launcher.core.api.method.AuthMethodPassword;
 import pro.gravit.launcher.core.api.method.details.AuthLoginOnlyDetails;
 import pro.gravit.launcher.core.api.method.details.AuthPasswordDetails;
 import pro.gravit.launcher.core.api.method.details.AuthTotpDetails;
 import pro.gravit.launcher.core.api.method.details.AuthWebDetails;
+import pro.gravit.launcher.core.api.method.password.AuthChainPassword;
 import pro.gravit.launcher.gui.scenes.login.methods.*;
 import pro.gravit.utils.helper.LogHelper;
 
@@ -69,7 +73,7 @@ public class AuthFlow {
     }
 
     private CompletableFuture<LoginAndPasswordResult> tryLogin(String resentLogin,
-            AuthRequest.AuthPasswordInterface resentPassword) {
+            AuthMethodPassword resentPassword) {
         CompletableFuture<LoginAndPasswordResult> authFuture = null;
         if (resentPassword != null) {
             authFuture = new CompletableFuture<>();
@@ -93,7 +97,7 @@ public class AuthFlow {
                     return CompletableFuture.completedFuture(x);
                 });
                 authFuture = authFuture.thenCompose(first -> authMethod.auth(details).thenApply(second -> {
-                    AuthRequest.AuthPasswordInterface password;
+                    AuthMethodPassword password;
                     String login = null;
                     if (first.login != null) {
                         login = first.login;
@@ -101,19 +105,11 @@ public class AuthFlow {
                     if (second.login != null) {
                         login = second.login;
                     }
-                    if (first.password instanceof AuthMultiPassword authMultiPassword) {
+                    if (first.password instanceof AuthChainPassword authMultiPassword) {
                         password = first.password;
-                        authMultiPassword.list.add(second.password);
-                    } else if (first.password instanceof Auth2FAPassword auth2FAPassword) {
-                        password = new AuthMultiPassword();
-                        ((AuthMultiPassword) password).list = new ArrayList<>();
-                        ((AuthMultiPassword) password).list.add(auth2FAPassword.firstPassword);
-                        ((AuthMultiPassword) password).list.add(auth2FAPassword.secondPassword);
-                        ((AuthMultiPassword) password).list.add(second.password);
+                        authMultiPassword.list().add(second.password);
                     } else {
-                        password = new Auth2FAPassword();
-                        ((Auth2FAPassword) password).firstPassword = first.password;
-                        ((Auth2FAPassword) password).secondPassword = second.password;
+                        password = new AuthChainPassword(List.of(first.password, second.password));
                     }
                     return new LoginAndPasswordResult(login, password);
                 }));
@@ -132,7 +128,7 @@ public class AuthFlow {
     }
 
     private void start(CompletableFuture<SuccessAuth> result, String resentLogin,
-            AuthRequest.AuthPasswordInterface resentPassword) {
+            AuthMethodPassword resentPassword) {
         CompletableFuture<LoginAndPasswordResult> authFuture = tryLogin(resentLogin, resentPassword);
         authFuture.thenAccept(e -> login(e.login, e.password, authAvailability, result)).exceptionally((e) -> {
             e = e.getCause();
@@ -153,13 +149,12 @@ public class AuthFlow {
     }
 
 
-    private void login(String login, AuthRequest.AuthPasswordInterface password,
+    private void login(String login, AuthMethodPassword password,
             AuthMethod authId, CompletableFuture<SuccessAuth> result) {
         isLoginStarted = true;
         var application = accessor.getApplication();
         LogHelper.dev("Auth with %s password ***** authId %s", login, authId);
-        AuthRequest authRequest = application.authService.makeAuthRequest(login, password, authId.getName());
-        accessor.processing(authRequest, application.getTranslation("runtime.overlay.processing.text.auth"),
+        accessor.processing(LauncherAPIHolder.auth().auth(login, password), application.getTranslation("runtime.overlay.processing.text.auth"),
                             (event) -> result.complete(new SuccessAuth(event, login, password)), (error) -> {
                     if (error.equals(AuthRequestEvent.OAUTH_TOKEN_INVALID)) {
                         application.runtimeSettings.oauthAccessToken = null;
@@ -175,7 +170,7 @@ public class AuthFlow {
                                 AuthRequestEvent.ONE_FACTOR_NEED_ERROR_MESSAGE_PREFIX.length() + 1).split("\\.")) {
                             newAuthFlow.add(Integer.parseInt(s));
                         }
-                        //AuthRequest.AuthPasswordInterface recentPassword = makeResentPassword(newAuthFlow, password);
+                        //AuthMethodPassword recentPassword = makeResentPassword(newAuthFlow, password);
                         authFlow.clear();
                         authFlow.addAll(newAuthFlow);
                         accessor.runInFxThread(() -> start(result, login, password));
@@ -229,15 +224,12 @@ public class AuthFlow {
 
     private void refreshToken() {
         var application = accessor.getApplication();
-        RefreshTokenRequest request = new RefreshTokenRequest(authAvailability.getName(),
-                                                              application.runtimeSettings.oauthRefreshToken);
-        accessor.processing(request, application.getTranslation("runtime.overlay.processing.text.auth"), (result) -> {
-            application.runtimeSettings.oauthAccessToken = result.oauth.accessToken;
-            application.runtimeSettings.oauthRefreshToken = result.oauth.refreshToken;
-            application.runtimeSettings.oauthExpire = result.oauth.expire == 0
+        accessor.processing(LauncherAPIHolder.auth().refreshToken(application.runtimeSettings.oauthRefreshToken), application.getTranslation("runtime.overlay.processing.text.auth"), (result) -> {
+            application.runtimeSettings.oauthAccessToken = result.getAccessToken();
+            application.runtimeSettings.oauthRefreshToken = result.getRefreshToken();
+            application.runtimeSettings.oauthExpire = result.getExpire() == 0
                     ? 0
-                    : System.currentTimeMillis() + result.oauth.expire;
-            Request.setOAuth(authAvailability.getName(), result.oauth);
+                    : System.currentTimeMillis() + result.getExpire();
             AuthOAuthPassword password = new AuthOAuthPassword(application.runtimeSettings.oauthAccessToken);
             LogHelper.info("Login with OAuth AccessToken");
             loginWithOAuth(password, authAvailability, false);
@@ -251,8 +243,7 @@ public class AuthFlow {
     private void loginWithOAuth(AuthOAuthPassword password,
             AuthMethod authAvailability, boolean refreshIfError) {
         var application = accessor.getApplication();
-        AuthRequest authRequest = application.authService.makeAuthRequest(null, password, authAvailability.getName());
-        accessor.processing(authRequest, application.getTranslation("runtime.overlay.processing.text.auth"),
+        accessor.processing(LauncherAPIHolder.auth().auth(null, password), application.getTranslation("runtime.overlay.processing.text.auth"),
                             (result) -> accessor.runInFxThread(
                                     () -> onSuccessAuth.accept(new SuccessAuth(result, null, null))),
                             (error) -> {
@@ -282,10 +273,10 @@ public class AuthFlow {
         authMethods.forEach((k, v) -> v.prepare());
     }
 
-    public record LoginAndPasswordResult(String login, AuthRequest.AuthPasswordInterface password) {
+    public record LoginAndPasswordResult(String login, AuthMethodPassword password) {
     }
 
-    public record SuccessAuth(AuthRequestEvent requestEvent, String recentLogin,
-                                     AuthRequest.AuthPasswordInterface recentPassword) {
+    public record SuccessAuth(AuthFeatureAPI.AuthResponse requestEvent, String recentLogin,
+                              AuthMethodPassword recentPassword) {
     }
 }

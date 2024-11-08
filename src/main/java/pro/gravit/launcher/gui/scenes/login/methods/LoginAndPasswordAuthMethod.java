@@ -1,7 +1,9 @@
 package pro.gravit.launcher.gui.scenes.login.methods;
 
 import javafx.scene.control.TextField;
+import pro.gravit.launcher.core.api.method.AuthMethodPassword;
 import pro.gravit.launcher.core.api.method.details.AuthPasswordDetails;
+import pro.gravit.launcher.core.api.method.password.AuthPlainPassword;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.impl.AbstractVisualComponent;
@@ -56,7 +58,7 @@ public class LoginAndPasswordAuthMethod extends AbstractAuthMethod<AuthPasswordD
     public CompletableFuture<AuthFlow.LoginAndPasswordResult> auth(AuthPasswordDetails details) {
         overlay.future = new CompletableFuture<>();
         String login = overlay.login.getText();
-        AuthRequest.AuthPasswordInterface password;
+        AuthMethodPassword password;
         if (overlay.password.getText().isEmpty() && overlay.password.getPromptText().equals(application.getTranslation(
                 "runtime.scenes.login.password.saved"))) {
             password = application.runtimeSettings.password;
@@ -103,7 +105,7 @@ public class LoginAndPasswordAuthMethod extends AbstractAuthMethod<AuthPasswordD
         public AuthFlow.LoginAndPasswordResult getResult() {
             String rawLogin = login.getText();
             String rawPassword = password.getText();
-            return new AuthFlow.LoginAndPasswordResult(rawLogin, application.authService.makePassword(rawPassword));
+            return new AuthFlow.LoginAndPasswordResult(rawLogin, new AuthPlainPassword(rawPassword));
         }
 
         @Override

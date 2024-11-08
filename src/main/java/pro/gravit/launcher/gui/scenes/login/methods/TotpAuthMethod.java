@@ -3,6 +3,7 @@ package pro.gravit.launcher.gui.scenes.login.methods;
 import javafx.scene.control.TextField;
 import pro.gravit.launcher.base.request.auth.password.AuthTOTPPassword;
 import pro.gravit.launcher.core.api.method.details.AuthTotpDetails;
+import pro.gravit.launcher.core.api.method.password.AuthTotpPassword;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.impl.AbstractVisualComponent;
@@ -54,9 +55,7 @@ public class TotpAuthMethod extends AbstractAuthMethod<AuthTotpDetails> {
         overlay.future = new CompletableFuture<>();
         String totp = overlay.getCode();
         if (totp != null && !totp.isEmpty()) {
-            AuthTOTPPassword totpPassword = new AuthTOTPPassword();
-            totpPassword.totp = totp;
-            return CompletableFuture.completedFuture(new AuthFlow.LoginAndPasswordResult(null, totpPassword));
+            return CompletableFuture.completedFuture(new AuthFlow.LoginAndPasswordResult(null, new AuthTotpPassword(totp)));
         }
         return overlay.future;
     }
