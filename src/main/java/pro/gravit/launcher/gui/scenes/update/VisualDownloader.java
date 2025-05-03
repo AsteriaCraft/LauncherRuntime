@@ -297,10 +297,20 @@ public class VisualDownloader {
                                           urlPath);
                         }
                     }
-                    Files.deleteIfExists(dir.resolve(path));
+                    try {
+                        Files.deleteIfExists(dir.resolve(path));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     adds.add(new Downloader.SizedFile(urlPath, path, file.size));
                 }
-                case DIR -> Files.createDirectories(dir.resolve(path));
+                case DIR -> {
+                    try {
+                        Files.createDirectories(dir.resolve(path));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
             return HashedDir.WalkAction.CONTINUE;
         });
