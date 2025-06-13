@@ -39,7 +39,7 @@ public class JavaSelectorComponent {
                 comboBox.getItems().add(version);
                 comboBox.setValue(profileSettings.getSelectedJava());
             }
-            if (comboBox.getTooltip() != null) {
+            if (comboBox.getTooltip() != null && profileSettings.getSelectedJava() != null) {
                 comboBox.getTooltip().setText(profileSettings.getSelectedJava().getPath().toAbsolutePath().toString());
             }
             comboBox.setOnAction(e -> {

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UploadAssetOverlay extends CenterOverlay {
     private static final HttpClient client = HttpClient.newBuilder()
@@ -27,7 +28,7 @@ public class UploadAssetOverlay extends CenterOverlay {
     private Button uploadSkin;
     private Button uploadCape;
     private CheckBox useSlim;
-    private AssetUploadInfoRequestEvent.SlimSupportConf slimSupportConf;
+    private final AtomicBoolean requireManualSlimSkinSelection = new AtomicBoolean(true);
     public UploadAssetOverlay(JavaFXApplication application) {
         super("overlay/uploadasset/uploadasset.fxml", application);
     }
@@ -42,10 +43,8 @@ public class UploadAssetOverlay extends CenterOverlay {
         uploadSkin = LookupHelper.lookup(layout, "#uploadskin");
         uploadCape = LookupHelper.lookup(layout, "#uploadcape");
         useSlim = LookupHelper.lookup(layout, "#useslim");
-        uploadSkin.setOnAction((a) -> uploadAsset("SKIN", switch (slimSupportConf) {
-            case USER -> new AssetOptions(useSlim.isSelected());
-            case UNSUPPORTED, SERVER -> null;
-        }));
+        uploadSkin.setOnAction((a) -> uploadAsset("SKIN", requireManualSlimSkinSelection.get() ?
+                new AssetOptions(useSlim.isSelected()) : null));
         uploadCape.setOnAction((a) -> uploadAsset("CAPE", null));
         LookupHelper.<Button>lookupIfPossible(layout, "#close").ifPresent((b) -> b.setOnAction((e) -> hide(0, null)));
     }
@@ -56,6 +55,7 @@ public class UploadAssetOverlay extends CenterOverlay {
         uploadSkin.setVisible(uploadSkinAvailable);
         uploadCape.setVisible(uploadCapeAvailable);
         if(uploadSkinAvailable) {
+            requireManualSlimSkinSelection.set(event.isRequireManualSlimSkinSelect());
             useSlim.setVisible(event.isRequireManualSlimSkinSelect());
         }
     }
@@ -82,7 +82,7 @@ public class UploadAssetOverlay extends CenterOverlay {
                     }
                 }
                 contextHelper.runInFxThread(() -> application.messageManager.createNotification(application.getTranslation("runtime.overlay.uploadasset.success.header"), application.getTranslation("runtime.overlay.uploadasset.success.description")));
-            });
+            }).handle(this::errorHandle);
         } catch (IOException e) {
             errorHandle(e);
         }

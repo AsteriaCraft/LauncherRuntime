@@ -67,6 +67,11 @@ public abstract class AbstractVisualComponent {
         currentStage.enableMouseDrag(layout);
     }
 
+    protected<T> Void errorHandle(T value, Throwable e) {
+        errorHandle(e);
+        return null;
+    }
+
     public Pane getLayout() {
         return layout;
     }
