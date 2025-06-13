@@ -2,16 +2,10 @@ package pro.gravit.launcher.gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
-import pro.gravit.launcher.base.profiles.ClientProfile;
-import pro.gravit.launcher.base.request.Request;
-import pro.gravit.launcher.base.request.RequestService;
-import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.launcher.base.request.auth.AuthRequest;
 import pro.gravit.launcher.client.api.DialogService;
 import pro.gravit.launcher.client.events.ClientExitPhase;
@@ -22,7 +16,9 @@ import pro.gravit.launcher.gui.commands.VersionCommand;
 import pro.gravit.launcher.gui.config.GuiModuleConfig;
 import pro.gravit.launcher.gui.config.RuntimeSettings;
 import pro.gravit.launcher.gui.helper.EnFSHelper;
-import pro.gravit.launcher.gui.impl.*;
+import pro.gravit.launcher.gui.impl.FXMLFactory;
+import pro.gravit.launcher.gui.impl.GuiObjectsContainer;
+import pro.gravit.launcher.gui.impl.MessageManager;
 import pro.gravit.launcher.gui.scenes.AbstractScene;
 import pro.gravit.launcher.gui.service.*;
 import pro.gravit.launcher.gui.stage.PrimaryStage;
@@ -45,11 +41,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 public class JavaFXApplication extends Application {
     private static final AtomicReference<JavaFXApplication> INSTANCE = new AtomicReference<>();
@@ -57,7 +51,6 @@ public class JavaFXApplication extends Application {
     public final LauncherConfig config = Launcher.getConfig();
     public final ExecutorService workers = Executors.newWorkStealingPool(4);
     public RuntimeSettings runtimeSettings;
-    public RequestService service;
     public GuiObjectsContainer gui;
     public AuthService authService;
     public ProfileService profileService;
@@ -66,7 +59,6 @@ public class JavaFXApplication extends Application {
     public SkinManager skinManager;
     public FXMLFactory fxmlFactory;
     public PingService pingService;
-    public OfflineService offlineService;
     public BackendCallbackService backendCallbackService;
     private PrimaryStage mainStage;
     private boolean debugMode;
@@ -105,7 +97,6 @@ public class JavaFXApplication extends Application {
         profileService = new ProfileService(this);
         messageManager = new MessageManager(this);
         skinManager = new SkinManager(this);
-        offlineService = new OfflineService(this);
         pingService = new PingService();
         LauncherBackendAPIHolder.getApi().setCallback(backendCallbackService);
         registerCommands();
@@ -155,14 +146,14 @@ public class JavaFXApplication extends Application {
             DialogService.setDialogImpl(dialogService);
             DialogService.setNotificationImpl(dialogService);
         }
-        if (offlineService.isOfflineMode()) {
+        /*if (offlineService.isOfflineMode()) {
             if (!offlineService.isAvailableOfflineMode() && !debugMode) {
                 messageManager.showDialog(getTranslation("runtime.offline.dialog.header"),
                                           getTranslation("runtime.offline.dialog.text"),
                                           Platform::exit, Platform::exit, false);
                 return;
             }
-        }
+        }*/
         try {
             mainStage = new PrimaryStage(this, stage, "%s Launcher".formatted(config.projectName));
             // Overlay loading
@@ -173,10 +164,10 @@ public class JavaFXApplication extends Application {
             gui.background.init();
             mainStage.pushBackground(gui.background);
             mainStage.show();
-            if (offlineService.isOfflineMode()) {
+            /*if (offlineService.isOfflineMode()) {
                 messageManager.createNotification(getTranslation("runtime.offline.notification.header"),
                                                   getTranslation("runtime.offline.notification.text"));
-            }
+            }*/
             //
             LauncherEngine.modulesManager.invokeEvent(new ClientGuiPhase(StdJavaRuntimeProvider.getInstance()));
             AuthRequest.registerProviders();

@@ -1,7 +1,6 @@
 package pro.gravit.launcher.gui.service;
 
 import pro.gravit.launcher.core.backend.LauncherBackendAPI;
-import pro.gravit.launcher.runtime.client.ServerPinger;
 
 import java.util.Map;
 import java.util.UUID;

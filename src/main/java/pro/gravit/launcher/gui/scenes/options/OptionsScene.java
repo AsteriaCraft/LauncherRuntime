@@ -2,8 +2,6 @@ package pro.gravit.launcher.gui.scenes.options;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import pro.gravit.launcher.base.profiles.ClientProfile;
-import pro.gravit.launcher.base.profiles.optional.OptionalView;
 import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.components.ServerButton;

@@ -2,19 +2,13 @@ package pro.gravit.launcher.gui.scenes.update;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import pro.gravit.launcher.base.Downloader;
-import pro.gravit.launcher.base.profiles.optional.OptionalView;
 import pro.gravit.launcher.core.backend.LauncherBackendAPI;
-import pro.gravit.launcher.core.hasher.FileNameMatcher;
-import pro.gravit.launcher.core.hasher.HashedDir;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.scenes.AbstractScene;
 import pro.gravit.utils.helper.LogHelper;
 
-import java.nio.file.Path;
 import java.util.concurrent.CompletionException;
-import java.util.function.Consumer;
 
 public class UpdateScene extends AbstractScene {
     private ProgressBar progressBar;

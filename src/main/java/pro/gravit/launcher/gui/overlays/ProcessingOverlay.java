@@ -3,8 +3,6 @@ package pro.gravit.launcher.gui.overlays;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Labeled;
-import pro.gravit.launcher.base.request.Request;
-import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.impl.AbstractStage;

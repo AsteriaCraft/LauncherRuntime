@@ -1,12 +1,10 @@
 package pro.gravit.launcher.gui.scenes.serverinfo;
 
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
-import pro.gravit.launcher.base.profiles.ClientProfile;
 import pro.gravit.launcher.core.api.features.ProfileFeatureAPI;
 import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.JavaFXApplication;
@@ -15,7 +13,6 @@ import pro.gravit.launcher.gui.components.UserBlock;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.scenes.AbstractScene;
 import pro.gravit.launcher.gui.scenes.interfaces.SceneSupportUserBlock;
-import pro.gravit.utils.helper.LogHelper;
 
 public class ServerInfoScene extends AbstractScene implements SceneSupportUserBlock {
     private ServerButton serverButton;

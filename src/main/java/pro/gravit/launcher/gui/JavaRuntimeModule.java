@@ -100,7 +100,6 @@ public class JavaRuntimeModule extends LauncherModule {
         registerEvent(this::engineInitPhase, ClientEngineInitPhase.class);
         registerEvent(this::exitPhase, ClientExitPhase.class);
         registerEvent(this::consoleUnlock, ClientUnlockConsoleEvent.class);
-        registerEvent(this::offlineMode, OfflineModeEvent.class);
     }
 
     private void preGuiPhase(ClientPreGuiPhase phase) {
@@ -128,10 +127,6 @@ public class JavaRuntimeModule extends LauncherModule {
         if (engine.runtimeProvider instanceof StdJavaRuntimeProvider stdJavaRuntimeProvider) {
             stdJavaRuntimeProvider.registerPrivateCommands();
         }
-    }
-
-    private void offlineMode(OfflineModeEvent event) {
-        OfflineService.applyRuntimeProcessors((OfflineRequestService) event.service);
     }
 
     private void engineInitPhase(ClientEngineInitPhase initPhase) {

@@ -5,8 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import pro.gravit.launcher.base.events.request.GetAssetUploadUrlRequestEvent;
-import pro.gravit.launcher.base.request.cabinet.AssetUploadInfoRequest;
 import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.core.backend.extensions.TextureUploadExtension;
 import pro.gravit.launcher.gui.JavaFXApplication;

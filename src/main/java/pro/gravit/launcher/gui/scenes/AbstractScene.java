@@ -7,8 +7,6 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.layout.Pane;
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
-import pro.gravit.launcher.base.request.Request;
-import pro.gravit.launcher.base.request.WebSocketEvent;
 import pro.gravit.launcher.core.api.LauncherAPIHolder;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;

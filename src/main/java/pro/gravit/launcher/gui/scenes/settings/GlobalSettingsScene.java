@@ -3,7 +3,6 @@ package pro.gravit.launcher.gui.scenes.settings;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Hyperlink;
 import javafx.stage.DirectoryChooser;
-import pro.gravit.launcher.base.profiles.ClientProfile;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.config.RuntimeSettings;
 import pro.gravit.launcher.gui.helper.LookupHelper;
