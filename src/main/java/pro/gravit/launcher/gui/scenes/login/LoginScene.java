@@ -27,7 +27,7 @@ public class LoginScene extends FxScene {
     private CheckBox autoenter;
     private Pane content;
     private UIComponent contentComponent;
-    private LoginAuthButtonComponent authButton;
+    private AuthButton authButton;
     private ComboBox<AuthMethod> authList;
     private AuthMethod authAvailability;
     private final AuthFlow authFlow;
@@ -47,8 +47,8 @@ public class LoginScene extends FxScene {
                 errorHandle(exception);
             }
         });
-        authButton = new LoginAuthButtonComponent(LookupHelper.lookup(layout, "#authButton"), application,
-                                                  (e) -> contextHelper.runCallback(authFlow::loginWithGui));
+        authButton = use(layout, AuthButton::new);
+        authButton.setOnAction((e) -> contextHelper.runCallback(authFlow::loginWithGui));
         savePasswordCheckBox = LookupHelper.lookup(layout, "#savePassword");
         autoenter = LookupHelper.lookup(layout, "#autoenter");
         autoenter.setSelected(application.runtimeSettings.autoAuth);
@@ -133,7 +133,7 @@ public class LoginScene extends FxScene {
     @Override
     public void errorHandle(Throwable e) {
         super.errorHandle(e);
-        contextHelper.runInFxThread(() -> authButton.setState(LoginAuthButtonComponent.AuthButtonState.ERROR));
+        contextHelper.runInFxThread(() -> authButton.setState(AuthButton.AuthButtonState.ERROR));
     }
 
     @Override
@@ -235,11 +235,11 @@ public class LoginScene extends FxScene {
             content.getChildren().add(component.getLayout());
         }
 
-        public LoginAuthButtonComponent getAuthButton() {
+        public AuthButton getAuthButton() {
             return authButton;
         }
 
-        public void setState(LoginAuthButtonComponent.AuthButtonState state) {
+        public void setState(AuthButton.AuthButtonState state) {
             authButton.setState(state);
         }
 

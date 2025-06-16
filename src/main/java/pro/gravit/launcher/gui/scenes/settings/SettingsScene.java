@@ -12,7 +12,7 @@ import pro.gravit.launcher.gui.components.ServerButton;
 import pro.gravit.launcher.gui.components.UserBlock;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.launcher.gui.scenes.interfaces.SceneSupportUserBlock;
-import pro.gravit.launcher.gui.scenes.settings.components.JavaSelectorComponent;
+import pro.gravit.launcher.gui.scenes.settings.components.JavaSelector;
 
 import java.text.MessageFormat;
 
@@ -23,7 +23,7 @@ public class SettingsScene extends BaseSettingsScene implements SceneSupportUser
     private Label ramLabel;
     private Slider ramSlider;
     private LauncherBackendAPI.ClientProfileSettings profileSettings;
-    private JavaSelectorComponent javaSelector;
+    private JavaSelector javaSelector;
     private UserBlock userBlock;
 
     public SettingsScene(JavaFXApplication application) {
@@ -71,7 +71,7 @@ public class SettingsScene extends BaseSettingsScene implements SceneSupportUser
         super.reset();
         var profile = application.profileService.getCurrentProfile();
         profileSettings = LauncherBackendAPIHolder.getApi().makeClientProfileSettings(profile);
-        javaSelector = new JavaSelectorComponent(componentList, profileSettings, profile);
+        javaSelector = new JavaSelector(componentList, profileSettings, profile);
         ramSlider.setValue(getReservedMemoryMbs());
         ramSlider.setMax(profileSettings.getMaxMemoryBytes(LauncherBackendAPI.ClientProfileSettings.MemoryClass.TOTAL) >> 20);
         ramSlider.valueProperty().addListener((observable, oldValue, newValue) -> {

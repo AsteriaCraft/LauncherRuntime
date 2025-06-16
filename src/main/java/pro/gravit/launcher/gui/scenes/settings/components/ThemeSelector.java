@@ -10,11 +10,11 @@ import pro.gravit.utils.helper.LogHelper;
 
 import java.util.Objects;
 
-public class ThemeSelectorComponent {
+public class ThemeSelector {
     private final JavaFXApplication application;
     private final ComboBox<RuntimeSettings.LAUNCHER_THEME> comboBox;
 
-    public ThemeSelectorComponent(JavaFXApplication application, Pane layout) {
+    public ThemeSelector(JavaFXApplication application, Pane layout) {
         this.application = application;
         comboBox = LookupHelper.lookup(layout, "#themeCombo");
         comboBox.getItems().clear();

@@ -10,11 +10,11 @@ import pro.gravit.utils.helper.LogHelper;
 
 import java.util.Objects;
 
-public class LanguageSelectorComponent {
+public class LanguageSelector {
     private final JavaFXApplication application;
     private final ComboBox<RuntimeSettings.LAUNCHER_LOCALE> comboBox;
 
-    public LanguageSelectorComponent(JavaFXApplication application, Pane layout) {
+    public LanguageSelector(JavaFXApplication application, Pane layout) {
         this.application = application;
         comboBox = LookupHelper.lookup(layout, "#languageCombo");
         comboBox.getItems().clear();

@@ -54,7 +54,7 @@ public class AuthFlow {
         }
         if (!accessor.isEmptyContent()) {
             accessor.clearContent();
-            accessor.setState(LoginAuthButtonComponent.AuthButtonState.ACTIVE);
+            accessor.setState(AuthButton.AuthButtonState.ACTIVE);
         }
         if (authMethodOnShow != null && !authMethodOnShow.isOverlay()) {
             loginWithGui();
@@ -174,7 +174,7 @@ public class AuthFlow {
     }
 
     void loginWithGui() {
-        accessor.setState(LoginAuthButtonComponent.AuthButtonState.UNACTIVE);
+        accessor.setState(AuthButton.AuthButtonState.UNACTIVE);
         {
             var method = getAuthMethodOnShow();
             if (method != null) {

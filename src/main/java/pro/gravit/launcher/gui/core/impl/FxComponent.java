@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import pro.gravit.launcher.base.request.RequestException;
 import pro.gravit.launcher.gui.core.JavaFXApplication;
+import pro.gravit.launcher.gui.core.interfaces.ValueComponent;
 import pro.gravit.launcher.gui.core.internal.FXExecutorService;
 import pro.gravit.launcher.gui.core.internal.FXMLFactory;
 import pro.gravit.utils.helper.LogHelper;
@@ -73,16 +74,26 @@ public abstract class FxComponent extends VisualComponentBase {
         }
     }
 
-    protected<T extends FxComponent> T use(Pane layout, BiFunction<Pane, JavaFXApplication, T> constructor) {
+    protected<T extends UIComponent> T use(Pane layout, BiFunction<Pane, JavaFXApplication, T> constructor) {
         T object = constructor.apply(layout, application);
         try {
-            object.currentStage = currentStage;
+            if(object instanceof FxComponent fxComponent) {
+                fxComponent.currentStage = currentStage;
+            }
             object.init();
             return object;
         } catch (Throwable e) {
             errorHandle(e);
         }
         return null;
+    }
+
+    protected<T extends ValueComponent<V>, V> T use(Pane layout, BiFunction<Pane, JavaFXApplication, T> constructor, V value) {
+        T object = use(layout, constructor);
+        if(object != null) {
+            object.onValue(value);
+        }
+        return object;
     }
 
     @Override

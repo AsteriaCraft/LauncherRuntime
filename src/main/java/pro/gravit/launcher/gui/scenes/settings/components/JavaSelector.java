@@ -13,12 +13,12 @@ import pro.gravit.launcher.core.backend.LauncherBackendAPIHolder;
 import pro.gravit.launcher.gui.helper.LookupHelper;
 import pro.gravit.utils.helper.LogHelper;
 
-public class JavaSelectorComponent {
+public class JavaSelector {
     private final ComboBox<LauncherBackendAPI.Java> comboBox;
     private final LauncherBackendAPI.ClientProfileSettings profileSettings;
     private final ProfileFeatureAPI.ClientProfile profile;
 
-    public JavaSelectorComponent(Pane layout,
+    public JavaSelector(Pane layout,
             LauncherBackendAPI.ClientProfileSettings profileSettings, ProfileFeatureAPI.ClientProfile profile) {
         comboBox = LookupHelper.lookup(layout, "#javaCombo");
         this.profile = profile;
