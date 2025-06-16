@@ -33,7 +33,7 @@ public class SettingsScene extends BaseSettingsScene implements SceneSupportUser
     @Override
     protected void doInit() {
         super.doInit();
-        this.userBlock = new UserBlock(layout, new SceneAccessor());
+        this.userBlock = use(layout, UserBlock::new);
 
         ramSlider = LookupHelper.lookup(componentList, "#ramSlider");
         ramLabel = LookupHelper.lookup(componentList, "#ramLabel");

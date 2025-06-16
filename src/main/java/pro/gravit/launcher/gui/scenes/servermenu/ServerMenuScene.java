@@ -30,7 +30,7 @@ public class ServerMenuScene extends AbstractScene implements SceneSupportUserBl
 
     @Override
     public void doInit() {
-        this.userBlock = new UserBlock(layout, new SceneAccessor());
+        this.userBlock = use(layout, UserBlock::new);
         LookupHelper.<ButtonBase>lookup(header, "#controls", "#settings").setOnAction((e) -> {
             try {
                 switchScene(application.gui.globalSettingsScene);

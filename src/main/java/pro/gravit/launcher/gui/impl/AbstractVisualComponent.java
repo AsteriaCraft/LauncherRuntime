@@ -11,11 +11,15 @@ import javafx.util.Duration;
 import pro.gravit.launcher.base.request.RequestException;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.helper.LookupHelper;
+import pro.gravit.launcher.gui.overlays.AbstractOverlay;
+import pro.gravit.launcher.gui.scenes.AbstractScene;
 import pro.gravit.utils.helper.LogHelper;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public abstract class AbstractVisualComponent {
     protected final JavaFXApplication application;
@@ -40,6 +44,14 @@ public abstract class AbstractVisualComponent {
         }
     }
 
+    protected AbstractVisualComponent(Pane layout, JavaFXApplication application) {
+        this.application = application;
+        this.sysFxmlPath = null;
+        this.contextHelper = new ContextHelper(this);
+        this.layout = layout;
+        this.fxExecutor = new FXExecutorService(contextHelper);
+    }
+
     public static FadeTransition fade(Node region, double delay, double from, double to,
             EventHandler<ActionEvent> onFinished) {
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(100), region);
@@ -49,22 +61,6 @@ public abstract class AbstractVisualComponent {
         fadeTransition.setToValue(to);
         fadeTransition.play();
         return fadeTransition;
-    }
-
-    protected void initBasicControls(Parent header) {
-        if (header == null) {
-            LogHelper.warning("Scene %s header button(#close, #hide) deprecated", getName());
-            LookupHelper.<ButtonBase>lookupIfPossible(layout, "#close")
-                        .ifPresent((b) -> b.setOnAction((e) -> currentStage.close()));
-            LookupHelper.<ButtonBase>lookupIfPossible(layout, "#hide")
-                        .ifPresent((b) -> b.setOnAction((e) -> currentStage.hide()));
-        } else {
-            LookupHelper.<ButtonBase>lookupIfPossible(header, "#controls", "#exit")
-                        .ifPresent((b) -> b.setOnAction((e) -> currentStage.close()));
-            LookupHelper.<ButtonBase>lookupIfPossible(header, "#controls", "#minimize")
-                        .ifPresent((b) -> b.setOnAction((e) -> currentStage.hide()));
-        }
-        currentStage.enableMouseDrag(layout);
     }
 
     protected<T> Void errorHandle(T value, Throwable e) {
@@ -105,6 +101,18 @@ public abstract class AbstractVisualComponent {
         }
     }
 
+    protected<T extends AbstractVisualComponent> T use(Pane layout, BiFunction<Pane, JavaFXApplication, T> constructor) {
+        T object = constructor.apply(layout, application);
+        try {
+            object.currentStage = currentStage;
+            object.init();
+            return object;
+        } catch (Throwable e) {
+            errorHandle(e);
+        }
+        return null;
+    }
+
     public void init() throws Exception {
         if (layout == null) {
             layout = (Pane) getFxmlRoot();
@@ -122,13 +130,39 @@ public abstract class AbstractVisualComponent {
 
     protected abstract void doInit();
 
-    protected abstract void doPostInit();
+    protected void doPostInit() {
+
+    }
 
     public abstract void reset();
 
-    public abstract void disable();
+    public void disable() {
 
-    public abstract void enable();
+    }
+
+    public void enable() {
+
+    }
+
+    protected void onShow() {
+
+    }
+
+    protected void onHide() {
+
+    }
+
+    protected void switchScene(AbstractScene scene) throws Exception {
+        currentStage.setScene(scene, true);
+        if(currentStage.getVisualComponent() != null) {
+            currentStage.getVisualComponent().onHide();
+            scene.onShow();
+        }
+    }
+
+    protected void switchToBackScene() throws Exception {
+        currentStage.back();
+    }
 
     public void errorHandle(Throwable e) {
         String message = null;
@@ -156,5 +190,19 @@ public abstract class AbstractVisualComponent {
 
     public boolean isDisableReturnBack() {
         return false;
+    }
+
+    public void showOverlay(AbstractOverlay overlay, EventHandler<ActionEvent> onFinished) throws Exception {
+        overlay.show(currentStage, onFinished);
+    }
+
+    protected final <T> void processRequest(String message, CompletableFuture<T> request,
+            Consumer<T> onSuccess, EventHandler<ActionEvent> onError) {
+        application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onError);
+    }
+
+    protected final <T> void processRequest(String message, CompletableFuture<T> request,
+            Consumer<T> onSuccess, Consumer<Throwable> onException, EventHandler<ActionEvent> onError) {
+        application.gui.processingOverlay.processRequest(currentStage, message, request, onSuccess, onException, onError);
     }
 }

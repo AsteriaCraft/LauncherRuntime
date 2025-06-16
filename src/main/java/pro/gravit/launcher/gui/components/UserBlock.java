@@ -10,21 +10,25 @@ import pro.gravit.launcher.core.backend.extensions.TextureUploadExtension;
 import pro.gravit.launcher.gui.JavaFXApplication;
 import pro.gravit.launcher.gui.config.DesignConstants;
 import pro.gravit.launcher.gui.helper.LookupHelper;
-import pro.gravit.launcher.gui.scenes.AbstractScene;
+import pro.gravit.launcher.gui.impl.AbstractVisualComponent;
 import pro.gravit.launcher.gui.utils.JavaFxUtils;
 import pro.gravit.utils.helper.LogHelper;
 
-public class UserBlock {
-    private final JavaFXApplication application;
-    private final Pane layout;
-    private final AbstractScene.SceneAccessor sceneAccessor;
-    private final ImageView avatar;
-    private final Image originalAvatarImage;
+public class UserBlock extends AbstractVisualComponent {
+    private ImageView avatar;
+    private Image originalAvatarImage;
 
-    public UserBlock(Pane layout, AbstractScene.SceneAccessor sceneAccessor) {
-        this.application = sceneAccessor.getApplication();
-        this.layout = layout;
-        this.sceneAccessor = sceneAccessor;
+    public UserBlock(Pane layout, JavaFXApplication application) {
+        super(layout, application);
+    }
+
+    @Override
+    public String getName() {
+        return "userBlock";
+    }
+
+    @Override
+    protected void doInit() {
         avatar = LookupHelper.lookup(layout, "#avatar");
         originalAvatarImage = avatar.getImage();
         LookupHelper.<ImageView>lookupIfPossible(layout, "#avatar").ifPresent((h) -> {
@@ -49,11 +53,11 @@ public class UserBlock {
         if(extension != null) {
             LookupHelper.<Button>lookupIfPossible(layout, "#customization").ifPresent((h) -> {
                 h.setVisible(true);
-                h.setOnAction((a) -> sceneAccessor.processRequest(
+                h.setOnAction((a) -> application.gui.processingOverlay.processRequest(currentStage,
                         application.getTranslation("runtime.overlay.processing.text.uploadassetinfo"),
                         extension.fetchTextureUploadInfo(), (info) ->
-                                sceneAccessor.runInFxThread(() ->
-                                                                    sceneAccessor.showOverlay(application.gui.uploadAssetOverlay, (f) -> application.gui.uploadAssetOverlay.onAssetUploadInfo(info))), sceneAccessor::errorHandle, (e) -> {}));
+                                contextHelper.runInFxThread(() ->
+                                                                    application.gui.uploadAssetOverlay.show(currentStage, (f) -> application.gui.uploadAssetOverlay.onAssetUploadInfo(info))), this::errorHandle, (e) -> {}));
             });
         }
     }

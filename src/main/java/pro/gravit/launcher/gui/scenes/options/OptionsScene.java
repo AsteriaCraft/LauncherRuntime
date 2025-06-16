@@ -20,7 +20,7 @@ public class OptionsScene extends AbstractScene implements SceneSupportUserBlock
 
     @Override
     protected void doInit() {
-        this.userBlock = new UserBlock(layout, new SceneAccessor());
+        this.userBlock = use(layout, UserBlock::new);
         optionsTab = new OptionsTab(application, LookupHelper.lookup(layout, "#tabPane"));
     }
 

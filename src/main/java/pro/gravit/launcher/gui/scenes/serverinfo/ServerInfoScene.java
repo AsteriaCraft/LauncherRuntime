@@ -24,7 +24,7 @@ public class ServerInfoScene extends AbstractScene implements SceneSupportUserBl
 
     @Override
     protected void doInit() {
-        this.userBlock = new UserBlock(layout, new SceneAccessor());
+        this.userBlock = use(layout, UserBlock::new);
         LookupHelper.<Button>lookup(layout, "#back").setOnAction((e) -> {
             try {
                 switchToBackScene();

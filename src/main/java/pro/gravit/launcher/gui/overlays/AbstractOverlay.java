@@ -50,18 +50,7 @@ public abstract class AbstractOverlay extends AbstractVisualComponent {
 
     protected abstract void doInit();
 
-    @Override
-    protected void doPostInit() {
-
-    }
-
     public abstract void reset();
-
-    public void disable() {
-    }
-
-    public void enable() {
-    }
 
     public void show(AbstractStage stage, EventHandler<ActionEvent> onFinished) throws Exception {
         if(!Platform.isFxApplicationThread()) {
