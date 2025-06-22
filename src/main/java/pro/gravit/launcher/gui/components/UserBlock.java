@@ -44,7 +44,7 @@ public class UserBlock extends FxComponent {
 
     public void reset() {
         LookupHelper.<Label>lookupIfPossible(layout, "#nickname")
-                    .ifPresent((e) -> e.setText(application.authService.getUsername()));
+                    .ifPresent((e) -> e.textProperty().bind(application.authService.username));
         LookupHelper.<Label>lookupIfPossible(layout, "#role")
                     .ifPresent((e) -> e.setText(application.authService.getMainRole()));
         avatar.setImage(originalAvatarImage);

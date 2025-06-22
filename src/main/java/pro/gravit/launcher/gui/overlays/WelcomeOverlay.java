@@ -29,7 +29,7 @@ public class WelcomeOverlay extends FxOverlay {
     @Override
     public void reset() {
         LookupHelper.<Label>lookupIfPossible(layout, "#playerName")
-                    .ifPresent((e) -> e.setText(application.authService.getUsername()));
+                    .ifPresent((e) -> e.textProperty().bind(application.authService.username));
         LookupHelper.<ImageView>lookupIfPossible(layout, "#playerHead").ifPresent((h) -> {
             try {
                 JavaFxUtils.setStaticRadius(h, DesignConstants.AVATAR_IMAGE_RADIUS);

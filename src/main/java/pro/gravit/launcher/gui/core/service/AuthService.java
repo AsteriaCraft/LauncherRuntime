@@ -1,5 +1,8 @@
 package pro.gravit.launcher.gui.core.service;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import pro.gravit.launcher.base.Launcher;
 import pro.gravit.launcher.base.LauncherConfig;
 import pro.gravit.launcher.base.request.auth.password.AuthAESPassword;
@@ -7,6 +10,7 @@ import pro.gravit.launcher.base.request.auth.password.AuthPlainPassword;
 import pro.gravit.launcher.core.api.method.AuthMethod;
 import pro.gravit.launcher.core.api.method.AuthMethodPassword;
 import pro.gravit.launcher.core.api.model.SelfUser;
+import pro.gravit.launcher.core.api.model.Texture;
 import pro.gravit.launcher.core.api.model.User;
 import pro.gravit.launcher.gui.core.JavaFXApplication;
 import pro.gravit.utils.helper.SecurityHelper;
@@ -14,7 +18,8 @@ import pro.gravit.utils.helper.SecurityHelper;
 public class AuthService {
     private final LauncherConfig config = Launcher.getConfig();
     private final JavaFXApplication application;
-    private SelfUser user;
+    public final SimpleObjectProperty<SelfUser> user = new SimpleObjectProperty<>();
+    public final ObservableValue<String> username = user.map(user -> user == null ? "Player" : user.getUsername());
     private AuthMethod authAvailability;
 
     public AuthService(JavaFXApplication application) {
@@ -36,7 +41,7 @@ public class AuthService {
     }
 
     public void setUser(SelfUser user) {
-        this.user = user;
+        this.user.set(user);
     }
 
     public void setAuthAvailability(AuthMethod info) {
@@ -52,8 +57,7 @@ public class AuthService {
     }
 
     public String getUsername() {
-        if (user == null) return "Player";
-        return user.getUsername();
+        return username.getValue();
     }
 
     public String getMainRole() {
@@ -61,10 +65,10 @@ public class AuthService {
     }
 
     public boolean checkPermission(String name) {
-        if (user == null || user.getPermissions() == null) {
+        if (user.get() == null || user.get().getPermissions() == null) {
             return false;
         }
-        return user.getPermissions().hasPerm(name);
+        return user.get().getPermissions().hasPerm(name);
     }
 
     public boolean checkDebugPermission(String name) {
@@ -72,13 +76,8 @@ public class AuthService {
                 checkPermission("launcher.debug."+name));
     }
 
-    public User getPlayerProfile() {
-        if (user == null) return null;
-        return user;
-    }
-
     public void exit() {
-        user = null;
+        user.set(null);
         //.profile = null;
     }
 }
