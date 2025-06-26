@@ -34,7 +34,7 @@ tasks.withType(JavaCompile) {
 
 jar {
     manifest.attributes("Module-Main-Class": mainClassName,
-            "Module-Config-Class": "pro.gravit.launcher.gui.config.GuiModuleConfig",
+            "Module-Config-Class": "pro.gravit.launcher.gui.core.config.GuiModuleConfig",
             "Module-Config-Name": "JavaRuntime",
             "Required-Modern-Java": "true")
     jar.archiveFileName = "JavaRuntime_lmodule.jar"
