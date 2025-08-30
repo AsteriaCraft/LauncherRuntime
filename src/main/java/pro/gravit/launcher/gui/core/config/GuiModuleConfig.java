@@ -10,12 +10,6 @@ public class GuiModuleConfig {
     public String createAccountURL;
     @LauncherInject(value = "modules.javaruntime.forgotpassurl")
     public String forgotPassURL;
-    @LauncherInject(value = "modules.javaruntime.hastebinserver")
-    public String hastebinServer;
-    @LauncherInject(value = "modules.javaruntime.forcedownloadjava")
-    public boolean forceDownloadJava;
-    @LauncherInject(value = "modules.javaruntime.javalist")
-    public Map<String, String> javaList;
     @LauncherInject(value = "modules.javaruntime.lazy")
     public boolean lazy;
     @LauncherInject(value = "modules.javaruntime.disableofflinemode")
@@ -36,9 +30,7 @@ public class GuiModuleConfig {
         GuiModuleConfig config = new GuiModuleConfig();
         config.createAccountURL = "https://gravitlauncher.com/createAccount.php";
         config.forgotPassURL = "https://gravitlauncher.com/fogotPass.php";
-        config.hastebinServer = "https://hastebin.com";
         config.lazy = false;
-        config.javaList = new HashMap<>();
         config.disableOfflineMode = false;
         config.autoAuth = false;
         config.locale = "RUSSIAN";

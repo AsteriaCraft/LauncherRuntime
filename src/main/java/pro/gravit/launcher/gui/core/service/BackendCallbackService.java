@@ -1,12 +1,15 @@
 package pro.gravit.launcher.gui.core.service;
 
+import javafx.application.Platform;
 import pro.gravit.launcher.core.api.features.ProfileFeatureAPI;
 import pro.gravit.launcher.core.api.model.SelfUser;
 import pro.gravit.launcher.core.backend.LauncherBackendAPI;
+import pro.gravit.launcher.gui.JavaRuntimeModule;
 import pro.gravit.launcher.gui.core.JavaFXApplication;
 import pro.gravit.launcher.gui.core.impl.ContextHelper;
 import pro.gravit.launcher.gui.scenes.login.AuthFlow;
 import pro.gravit.launcher.gui.scenes.login.LoginScene;
+import pro.gravit.utils.helper.LogHelper;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -49,6 +52,10 @@ public class BackendCallbackService extends LauncherBackendAPI.MainCallback {
 
     @Override
     public void onShutdown() {
-        super.onShutdown();
+        boolean isAlreadyShutdown = JavaRuntimeModule.SHUTDOWN_STARTED.getAndSet(true); // It can be called by launcher itself
+        if(!isAlreadyShutdown) {
+            Platform.exit();
+            LogHelper.info("Method after Platform.exit() called");
+        }
     }
 }

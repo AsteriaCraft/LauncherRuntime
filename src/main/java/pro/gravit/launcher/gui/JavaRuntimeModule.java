@@ -20,12 +20,13 @@ import pro.gravit.utils.helper.LogHelper;
 import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.Base64;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class JavaRuntimeModule extends LauncherModule {
-
     public final static String RUNTIME_NAME = "stdruntime";
     static LauncherEngine engine;
     private RuntimeProvider provider;
+    public static AtomicBoolean SHUTDOWN_STARTED = new AtomicBoolean(false);
 
     public JavaRuntimeModule() {
         super(new LauncherModuleInfo("StdJavaRuntime",
@@ -125,7 +126,8 @@ public class JavaRuntimeModule extends LauncherModule {
     }
 
     private void exitPhase(ClientExitPhase exitPhase) {
-        if(LauncherBackendAPIHolder.getApi() != null) {
+        boolean isAlreadyShutdown = SHUTDOWN_STARTED.getAndSet(true);
+        if(!isAlreadyShutdown && LauncherBackendAPIHolder.getApi() != null) {
             LauncherBackendAPIHolder.getApi().shutdown();
         }
     }
