@@ -87,7 +87,12 @@ public class ServerInfoScene extends FxScene implements SceneSupportUserBlock {
                     }
                     return null;
                 });
-        });
+        }).exceptionally(e -> {
+                contextHelper.runInFxThread(() -> {
+                    errorHandle(e);
+                });
+                return null;
+            });
 
         });
         /*application.launchService.launchClient().thenAccept((clientInstance -> {

@@ -64,7 +64,7 @@ public class DebugScene extends FxScene {
     @Override
     public void errorHandle(Throwable e) {
         if (!(e instanceof EOFException)) {
-            if (LogHelper.isDebugEnabled()) processLogOutput.append(e.toString());
+            processLogOutput.append(e.toString());
         }
     }
 
