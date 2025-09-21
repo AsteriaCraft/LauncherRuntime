@@ -137,6 +137,11 @@ public abstract class FxComponent extends VisualComponentBase {
         application.messageManager.createNotification("Error", message);
     }
 
+    public void errorHandle(String e) {
+        LogHelper.error(e);
+        application.messageManager.createNotification("Error", e);
+    }
+
     protected Parent getFxmlRootPrivate() {
         return getFxmlRoot();
     }

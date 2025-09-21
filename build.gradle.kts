@@ -4,9 +4,8 @@ plugins {
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.jar {
@@ -34,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.gravitlauncher.launcher:launcher-runtime:5.7.0-SNAPSHOT")
+    implementation("com.gravitlauncher.launcher:launcher-runtime:5.7.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")

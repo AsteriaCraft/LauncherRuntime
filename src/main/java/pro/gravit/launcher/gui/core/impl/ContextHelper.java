@@ -1,6 +1,9 @@
 package pro.gravit.launcher.gui.core.impl;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.util.Duration;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,6 +31,21 @@ public class ContextHelper {
                 }
             });
         }
+        return result;
+    }
+
+    public static<T> CompletableFuture<T> runAfterTimeoutStatic(Duration duration, GuiExceptionCallback<T> callback) {
+        CompletableFuture<T> result = new CompletableFuture<>();
+        Timeline timeline = new Timeline(new KeyFrame(duration, (x) -> {
+            Platform.runLater(() -> {
+                try {
+                    result.complete(callback.call());
+                } catch (Throwable throwable) {
+                    result.completeExceptionally(throwable);
+                }
+            });
+        }));
+        timeline.play();
         return result;
     }
 
@@ -72,6 +90,13 @@ public class ContextHelper {
 
     public final <T> CompletableFuture<T> runInFxThread(GuiExceptionCallback<T> callback) {
         return runInFxThreadStatic(callback).exceptionally((t) -> {
+            errorHandling(t);
+            return null;
+        });
+    }
+
+    public final <T> CompletableFuture<T> runAfterTimeout(Duration duration, GuiExceptionCallback<T> callback) {
+        return runAfterTimeoutStatic(duration, callback).exceptionally((t) -> {
             errorHandling(t);
             return null;
         });

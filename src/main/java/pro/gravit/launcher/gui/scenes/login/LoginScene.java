@@ -1,10 +1,12 @@
 package pro.gravit.launcher.gui.scenes.login;
 
+import javafx.application.Platform;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import pro.gravit.launcher.base.events.request.GetAvailabilityAuthRequestEvent;
 import pro.gravit.launcher.core.api.method.AuthMethod;
@@ -100,7 +102,13 @@ public class LoginScene extends FxScene {
                            changeAuthAvailability(auth.get(0));
                        }
                        runAutoAuth();
-                   }), null);
+                   }), (e) -> {
+                        errorHandle(e);
+                        contextHelper.runAfterTimeout(Duration.seconds(2), () -> {
+                            Platform.exit();
+                            return null;
+                        });
+                });
     }
 
     private void runAutoAuth() {
@@ -126,7 +134,9 @@ public class LoginScene extends FxScene {
 
     public <T> void processing(CompletableFuture<T> request, String text, Consumer<T> onSuccess,
             Consumer<String> onError) {
-        processRequest(text, request, onSuccess, (thr) -> onError.accept(thr.getCause().getMessage()), null);
+        processRequest(text, request, onSuccess, onError == null ? null :
+                               (thr) -> onError.accept(thr.getCause().getMessage()),
+                       null);
     }
 
 
