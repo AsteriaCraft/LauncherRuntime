@@ -16,10 +16,7 @@ import pro.gravit.launcher.gui.core.impl.FxScene;
 import pro.gravit.launcher.gui.scenes.interfaces.SceneSupportUserBlock;
 import pro.gravit.utils.helper.CommonHelper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServerMenuScene extends FxScene implements SceneSupportUserBlock {
     private UserBlock userBlock;
@@ -58,7 +55,7 @@ public class ServerMenuScene extends FxScene implements SceneSupportUserBlock {
         Map<ProfileFeatureAPI.ClientProfile, ServerButtonCache> serverButtonCacheMap = new LinkedHashMap<>();
         
         List<ProfileFeatureAPI.ClientProfile> profiles = new ArrayList<>(application.profileService.getProfiles());
-        //profiles.sort(Comparator.comparingInt(ClientProfile::getSortIndex).thenComparing(ClientProfile::getTitle));
+        profiles.sort(Comparator.comparing(ProfileFeatureAPI.ClientProfile::getName));
         int position = 0;
         for (var profile : profiles) {
             ServerButtonCache cache = new ServerButtonCache();
