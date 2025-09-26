@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.gravitlauncher.launcher:launcher-runtime:5.7.4")
+    implementation("com.gravitlauncher.launcher:launcher-runtime:5.7.5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
