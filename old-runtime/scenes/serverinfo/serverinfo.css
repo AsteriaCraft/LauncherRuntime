@@ -1,0 +1,45 @@
+/*-- DrLeonardo styles refactor --*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+
+/*-- Информация сервера --*/
+#server-detail {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20px;
+}
+#server-detail > #serverName {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+}
+#server-detail > #serverDescription {
+    -fx-font-style: normal;
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+}
+
+/*-- Фон сервера --*/
+#serverImage {
+    -fx-background-color: transparent;
+    -fx-background-size: cover;
+}
+#background{
+    -fx-background-color: #181A1B;
+    -fx-background-size: cover;
+
+}
+.info-container-pane{
+    -fx-background-color: #181A1B;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #252525;
+    -fx-background-size: cover;
+}
+.info-container-pane-img{
+    -fx-background-size: cover;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+/*-- DrLeonardo styles refactor --*/

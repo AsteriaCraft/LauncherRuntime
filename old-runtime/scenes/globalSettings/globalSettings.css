@@ -1,0 +1,42 @@
+/*-- DrLeonardo styles refactor --*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+#launcherSettings{
+    -fx-background-color: #282828;
+}
+
+#globalSettingsPane * .settings-checkbox {
+    -fx-background-size: 20 20;
+    -fx-background-position: 16 25;
+    -fx-fill: -fx-black2C;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-min-height: 70px;
+    -fx-max-width: 334px;
+
+}
+#globalSettingsPane * .settings-checkbox .maintext {
+    -fx-label-padding: 10 0 0 35;
+}
+#globalSettingsPane * .settings-checkbox .descriptiontext{
+    -fx-label-padding: 28 0 0 35;
+}
+#javaVer{
+    -fx-background-color: -fx-ramGR;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+
+}
+#javaVertext{
+    -fx-text-fill: #fafafa;
+}
+/*-- DrLeonardo styles refactor --*/
+.header {
+    -fx-font-size: 15px;
+}
+#javaErrorVerPane{
+    -fx-background-color: -fx-red;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}

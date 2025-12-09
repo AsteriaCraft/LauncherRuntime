@@ -1,0 +1,12 @@
+/*-- DrLeonardo styles refactor --*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+#worldMap{
+    -fx-background-color: #282828;
+
+}
+#buttonunactivetext{
+    -fx-fill: #fafafa;
+}
+/*-- DrLeonardo styles refactor --*/

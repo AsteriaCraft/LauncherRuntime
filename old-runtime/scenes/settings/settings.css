@@ -1,0 +1,131 @@
+/* 
+FluffyCuteOwO#6745 - DarkenGravitLauncherRuntime
+*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+
+/*-- Вывод данных --*/
+#settingsPane * #settings-detail {
+    -fx-background-color: -fx-black2C;
+    -fx-background-radius: 20px;
+}
+
+/* RAM настройки */
+#ramLabel {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-black2C;
+}
+#ramSlider > .track {
+    -fx-background-color: -fx-ramGR;
+    -fx-pref-height: 4px;
+}
+#ramSlider > .thumb {
+    -fx-background-image: url("../../images/icons/thumb.png");
+    -fx-pref-width: 14px;
+    -fx-pref-height: 14px;
+}
+#ramSlider > .colored-track {
+    -fx-background-color: -fx-violet-hover;
+    -fx-pref-height: 4px;
+}
+#ramSlider > .animated-thumb {
+    -fx-background-color: transparent;
+}
+#ramSlider > .slider-value {
+    -fx-fill: -fx-white;
+    -fx-stroke: -fx-white;
+}
+.ramtext {
+    -fx-font-size: 14px;
+    -fx-background-color: -fx-grayD;
+}
+#ramInfo {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-grayD;
+}
+
+/*-- Чекбоксы --*/
+#settingsPane * .settings-container {
+
+}
+#settingsPane * .settings-checkbox {
+    -fx-background-size: 20 20;
+    -fx-background-position: 16 25;
+    -fx-fill: -fx-black2C;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-min-height: 70px;
+    -fx-max-width: 442px;
+
+}
+#settingsPane * .settings-checkbox .maintext {
+    -fx-label-padding: 10 0 0 35;
+}
+#settingsPane * .settings-checkbox .descriptiontext{
+    -fx-label-padding: 28 0 0 35;
+}
+
+#settingsPane * .settings-label {
+    -fx-fill: -fx-black2C;
+    -fx-font-size: 12px;
+}
+
+/* Смена директорий */
+#folder {
+    -fx-background-color: -fx-gray;
+    -fx-background-radius: 0 0 20 20;
+    -fx-cursor: hand;
+}
+#patch {
+    -fx-font-size: 14px;
+    -fx-fill: -fx-grayD;
+}
+#patch:visited {
+    -fx-font-size: 14px;
+    -fx-fill: -fx-header;
+}
+#changeDir, #copenConfig, #copenMods {
+    -fx-font-weight: bold;
+    -fx-font-size: 10px;
+    -fx-text-fill: -fx-header;
+    -fx-background-color: transparent;
+}
+#changeDir:hover,
+#changeDir:pressed {
+    -fx-text-fill: -fx-header-hover;
+}
+#copenConfig:hover, 
+#copenConfigr:pressed{
+    -fx-text-fill: -fx-header-hover;
+}
+/* Описание Java */
+#javaError {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: -fx-red;
+    -fx-text-fill: -fx-red;
+}
+#javaSelect {
+    -fx-background-color: -fx-grayLTr;
+}
+#javaSelect > #javaHeader {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: -fx-black2C;
+}
+#javaSelect > .javaDesc {
+    -fx-fill: -fx-black2C;
+    -fx-font-size: 12px;
+}
+#javaSelect > #javaPath {
+    -fx-font-size: 10px;
+    -fx-fill: -fx-grayD;
+}
+#clientSettings{
+    -fx-background-color: #282828;
+
+}
+
+/*-- DrLeonardo styles refactor --*/

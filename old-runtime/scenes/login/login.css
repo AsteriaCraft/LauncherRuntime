@@ -1,0 +1,144 @@
+/* 
+FluffyCuteOwO#6745 - DarkenGravitLauncherRuntime
+*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+/* global */
+#loginbg{
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 8px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 8px;
+}
+/* end global */
+
+/* login.fxml */
+#backgroundimage{
+    -fx-background-size: cover;
+    -fx-background-radius: 8px;
+}
+.authActive{
+    -fx-background-color: #282828;
+    -fx-background-radius: 8px;
+    -fx-border-color: #202020;
+    -fx-border-radius: 8px;
+}
+#rootLoginBg{
+    -fx-background-color: #181A1B;
+    -fx-background-radius: 8px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 8px;
+}
+#authbuttontext{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 12px;
+}
+#welcometext{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 24px;
+}
+#selectauthtext{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-family: "Manrope Regular";
+}
+.authActive:hover{
+    -fx-background-color: #222222;
+}
+#loginPane{
+    -fx-background-color: #181a1b00;
+    -fx-background-radius: 8px;
+}
+/* end login.fxml */
+
+/* loginpassword.fxml */
+#login,
+#password {
+    -fx-background-color: #202020;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #444444;
+    -fx-font-family: "Manrope Regular";
+    -fx-cursor: text;
+}
+#password:focused,
+#login:focused {
+}
+#createaccounttext{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+    -fx-font-family: "Manrope Medium";
+}
+#createAccount{
+    -fx-text-fill: #0A84FF;
+    -fx-font-size: 12px;
+    -fx-font-family: "Manrope Regular";
+}
+#createAccount:hover{
+    -fx-text-fill: #2e97ff;
+}
+#backtext{
+    -fx-font-size: 12px;
+    -fx-fill: #FFFFFF;
+    -fx-font-family: "Manrope Medium";
+    -fx-align-items: center;
+}
+#backbutton{
+    -fx-background-color: #202020;
+    -fx-background-radius: 4px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 4px;
+}
+#backbutton:hover{
+    -fx-background-color: #222222;
+}
+#login, #password{
+    -fx-font-family: "Manrope Regular";
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #626262;
+    -fx-text-fill: #9b9b9b;
+    -fx-padding: 0 0 0 14;
+}
+#start{
+    -fx-background-image: url('../../images/components/global/loading.gif');
+    -fx-background-size: cover;
+}
+#player{
+    -fx-background-color: #202020;
+    -fx-background-radius: 8px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 8px;
+}
+
+.field-auth {
+    -fx-background-color: #2f2f2f;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #212121;
+    -fx-font-family: "Manrope Regular";
+    -fx-cursor: text;
+}
+#loginPane * .savePassword {
+    -fx-padding: 0 0 0 20;
+    -fx-background-size: 20 20;
+    -fx-label-padding: 0 0 0 10;
+    -fx-background-position: 10 12;
+    -fx-font-size: 7pt;
+}
+
+#loginPane * .autoEnter {
+    -fx-padding: 0 0 0 20;
+    -fx-background-size: 20 20;
+    -fx-label-padding: 0 0 0 10;
+    -fx-background-position: 10 12;
+    -fx-font-size: 7pt;
+}
+#loginPane * .savePassword:selected {
+    -fx-background-color: #313131;
+}
+#loginPane * .autoEnter:selected {
+    -fx-background-color: #313131;
+}

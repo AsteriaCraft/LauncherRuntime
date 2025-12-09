@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="layout" fx:id="loginPane" prefHeight="560.0" prefWidth="930.0" styleClass="background" stylesheets="@login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="layout" fx:id="loginPane" prefHeight="800.0" prefWidth="1240.0" styleClass="background" stylesheets="@login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <!-- Вертикальная полоса -->
     <AnchorPane id="loginLeftPane" prefWidth="380.0" styleClass="vline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -23,7 +23,7 @@
             <children>
             <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" orientation="VERTICAL" prefHeight="320.0">
                <children>
-                    <ImageView id="logo" pickOnBounds="true" preserveRatio="true">
+                    <ImageView id="logo" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../../images/logo.png" />
                         </image>

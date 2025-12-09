@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane fx:id="layout" prefHeight="500.0" prefWidth="900.0" styleClass="transparent" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+
+   <!-- Навбар -->
+   <Pane id="header" prefHeight="100.0" prefWidth="900.0">
+      <children>
+
+         <!-- Заголовок сцены -->
+         <Label id="headingDialog" layoutX="25.0" layoutY="38.0" prefHeight="25.0" prefWidth="644.0" text="%runtime.scenes.console.headingConsole" textFill="#b6b6bb" />
+
+         <!-- Кнопки управления -->
+         <Pane id="controls" layoutX="221.5" layoutY="34.0" prefHeight="32.0" prefWidth="644.0">
+            <children>
+
+               <!-- Кнопка закрыть -->
+               <Button id="exit" graphicTextGap="0.0" layoutX="611.0" mnemonicParsing="false" styleClass="icon-button">
+                  <graphic>
+                     <SVGPath content="M1 1L6 6M11 11L6 6M6 6L1 11L11 1" stroke="#b6b6bb" strokeLineCap="BUTT" strokeWidth="2.0" styleClass="icon-button-color" />
+                  </graphic>
+                  <tooltip>
+                     <Tooltip id="exitTooltip" text="%runtime.scenes.login.exitTooltip" />
+                  </tooltip>
+               </Button>
+
+               <!-- Кнопка свернуть -->
+               <Button id="minimize" layoutX="569.0" mnemonicParsing="false" styleClass="icon-button">
+                  <graphic>
+                     <SVGPath content="M0 1H10" stroke="#b6b6bb" strokeWidth="2.0" />
+                  </graphic>
+                  <tooltip>
+                     <Tooltip id="minimizeTooltip" text="%runtime.scenes.login.minimizeTooltip" />
+                  </tooltip>
+               </Button>
+
+               <!-- Кнопка hastebin -->
+               <Button id="hastebin" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="471.0" layoutY="-2.0" prefHeight="32.0" prefWidth="96.0" styleClass="icon-button">
+                  <tooltip>
+                     <Tooltip id="hasteTooltip" text="%runtime.scenes.debug.hasteTooltip" />
+                  </tooltip>
+                  <graphic>
+                     <Pane prefHeight="52.0" prefWidth="103.0">
+                        <children>
+                           <Text layoutX="6.0" layoutY="18.0" strokeType="OUTSIDE" styleClass="header-button-text" text="%runtime.scenes.debug.hastebin" wrappingWidth="51" />
+                           <SVGPath content="M1 6C1 5.17157 1.67157 4.5 2.5 4.5H78.5C79.3284 4.5 80 5.17157 80 6V26C80 26.8284 79.3284 27.5 78.5 27.5H2.5C1.67157 27.5 1 26.8284 1 26V6Z" layoutY="-2.0" styleClass="header-button" />
+                           <SVGPath content="M60.5 14.0632L68.3981 14.0632L66.3118 16.2035L67.0883 17L70.5 13.5L67.0883 10L66.3119 10.7965L68.3981 12.9368L60.5 12.9368L60.5 14.0632Z" layoutY="-3.0" styleClass="header-button" />
+                           <SVGPath content="M70.5 17.9368H62.6019L64.6882 15.7965L63.9117 15L60.5 18.5L63.9117 22L64.6882 21.2035L62.6019 19.0632H70.5V17.9368Z" layoutY="-2.0" styleClass="header-button" />
+                        </children>
+                     </Pane>
+                  </graphic>
+               </Button>
+
+            </children>
+         </Pane>
+      </children>
+   </Pane>
+
+   <Pane id="output-detail" layoutX="20.0" layoutY="98.0" prefHeight="325.0" prefWidth="860.0">
+      <children>
+         <TextArea id="output" editable="false" layoutX="-2.0" layoutY="6.0" prefHeight="317.0" prefWidth="860.0" style="-fx-background-color: #232423;" wrapText="true" />
+
+         <!-- Поле ввода -->
+         <Pane id="cmdinput" layoutX="-21.0" layoutY="343.0" prefHeight="58.0" prefWidth="900.0" styleClass="transparent">
+            <children>
+               <TextField id="commandInput" layoutX="1.0" layoutY="3.0" prefHeight="56.0" prefWidth="900.0" promptText="%runtime.scenes.console.textInput" style="-fx-background-color: #161716;">
+                  <padding>
+                     <Insets left="20.0" />
+                  </padding></TextField>
+               <Button id="send" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="715.0" layoutY="3.0" prefHeight="56.0" prefWidth="186.0" styleClass="icon-button" textOverrun="CLIP">
+                  <graphic>
+                     <Pane prefHeight="48.0" prefWidth="167.0">
+                        <children>
+                           <Text fill="#b6b6bb" fontSmoothingType="LCD" layoutX="26.0" layoutY="28.0" strokeType="OUTSIDE" styleClass="send-button-text" text="%runtime.scenes.console.text-send" textAlignment="RIGHT" wrappingWidth="95.921875" />
+                           <SVGPath content="M0.0909119 16.1562L18.6364 8.5L0.0909119 0.84375V6.79861L13.3377 8.5L0.0909119 10.2014V16.1562Z" fill="#b6b6bb" layoutX="140.0" layoutY="15.0" styleClass="header-button" />
+                        </children>
+                     </Pane>
+                  </graphic>
+                  <tooltip>
+                     <Tooltip id="sendTooltip" text="%runtime.scenes.console.sendTooltip" />
+                  </tooltip>
+               </Button>
+            </children>
+         </Pane>
+      </children>
+   </Pane>
+
+   <!-- Подключение стилей-->
+   <stylesheets>
+      <URL value="@console.css" />
+      <URL value="@../../styles/global.css" />
+      <URL value="@../../styles/variables.css" />
+   </stylesheets>
+
+</Pane>

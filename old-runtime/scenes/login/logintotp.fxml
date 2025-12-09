@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane fx:id="loginPane" prefHeight="800.0" prefWidth="1240.0" styleClass="transparent" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <Pane fx:id="layout" prefHeight="800.0" prefWidth="1240.0" styleClass="transparent">
+        <Pane id="logo" layoutX="525.0" layoutY="22.0" prefHeight="16.0" prefWidth="16.0" />
+        <Label id="title" ellipsisString="162" layoutX="551.0" layoutY="20.0" lineSpacing="162.0" text="%runtime.scenes.login.welcomeHeader" />
+        <Pane id="loginbg" layoutX="464.0" layoutY="290.0" prefHeight="220.0" prefWidth="340.0">
+            <children>
+                <Pane id="totpText" layoutX="29.0" layoutY="163.0" prefHeight="44.0" prefWidth="282.0">
+                    <children>
+                        <TextField id="6st" alignment="CENTER" layoutX="194.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                        <TextField id="5st" alignment="CENTER" layoutX="168.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                        <TextField id="4st" alignment="CENTER" layoutX="142.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                        <TextField id="3st" alignment="CENTER" layoutX="115.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                        <TextField id="2st" alignment="CENTER" layoutX="89.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                        <TextField id="1st" alignment="CENTER" layoutX="63.0" layoutY="2.0" prefHeight="40.0" prefWidth="25.0" promptText="_" styleClass="field-auth" />
+                    </children>
+                </Pane>
+                <Label id="welcometext" alignment="CENTER" layoutY="81.0" prefHeight="29.0" prefWidth="340.0" text="%runtime.scenes.login.paneHeader" />
+                <Label id="selectauthtext" alignment="CENTER" layoutY="120.0" prefHeight="18.0" prefWidth="340.0" text="%runtime.scenes.login.text-2fa" />
+                <Pane id="logo" layoutX="149.0" layoutY="21.0" prefHeight="42.0" prefWidth="42.0" />
+            </children>
+        </Pane>
+    </Pane>
+
+    <!-- Подключение стилей-->
+    <stylesheets>
+        <URL value="@login.css" />
+        <URL value="@../../styles/global.css" />
+        <URL value="@../../styles/variables.css" />
+    </stylesheets>
+
+</Pane>

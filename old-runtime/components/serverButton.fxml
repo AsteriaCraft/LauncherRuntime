@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+
+
+<!-- DrLeonardo refactor -->
+
+<Pane fx:id="serverButton" prefHeight="336.0" prefWidth="731.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <Pane id="serverButtonLayout" layoutX="2.0" layoutY="2.0" prefHeight="329.0" prefWidth="724.0">
+      <children>
+         <Pane prefHeight="329.0" prefWidth="224.0" style="-fx-border-radius: 10 0 0 10; -fx-background-radius: 10 0 0 10;">
+            <ImageView id="serverButtonImage" fitHeight="329.0" fitWidth="224.0" layoutX="1.0" smooth="false">
+               <image>
+
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <children>
+               <Pane id="serverVersionLayout" layoutX="7.0" layoutY="10.0" prefHeight="29.0" prefWidth="60.0">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <children>
+                     <Label id="version" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="21.0" prefWidth="55.0" text="1.7.10" textFill="#cf46f0">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </Pane>
+            </children>
+         </Pane>
+         <Pane layoutY="272.0" opacity="0.82" prefHeight="58.0" prefWidth="225.0" style="-fx-background-color: #000000; -fx-border-radius: 0 0 0 10; -fx-background-radius: 0 0 0 10;">
+            <children>
+
+                                       <!-- Информация сервера -->
+               <Label id="nameServer" layoutX="18.0" layoutY="4.0" prefHeight="29.0" prefWidth="189.0" text="Server" textAlignment="CENTER" />
+            </children></Pane>
+         <Label id="genreServer" layoutX="19.0" layoutY="301.0" prefHeight="17.0" prefWidth="189.0" text="HITECH">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0" startX="0.12322274881516582">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color red="0.7442129850387573" green="0.0972222238779068" blue="1.0" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.3407267965297102">
+                        <color>
+                           <Color red="0.4660087823867798" green="0.16447368264198303" blue="0.9868420958518982" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.5201342281879194">
+                        <color>
+                           <Color red="0.46666666865348816" green="0.16470588743686676" blue="0.9882352948188782" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.8976919299394336">
+                        <color>
+                           <Color red="0.9342105388641357" green="0.05622563511133194" blue="0.6269158124923706" />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color red="0.9342105388641357" green="0.05622563511133194" blue="0.6269158124923706" />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <Label id="serverDescriptionHeader" alignment="TOP_LEFT" layoutX="241.0" layoutY="16.0" prefHeight="17.0" prefWidth="450.0" text="Asteria Craft - Legacy" textFill="#fafafa">
+            <font>
+               <Font size="18.0" />
+            </font></Label>
+                     <Label id="serverDescription" alignment="TOP_LEFT" layoutX="241.0" layoutY="55.0" prefHeight="210.0" prefWidth="450.0" text="Label" textFill="#a4a4a4" wrapText="true"/>
+         <ProgressBar id="playersTrack" layoutX="224.0" layoutY="272.0" prefHeight="3.0" prefWidth="500.0" progress="0.0" />
+         <Label id="serverOfflineLabel" layoutX="255.0" layoutY="289.0" prefHeight="25.0" prefWidth="322.0" text="%runtime.scenes.servermenuItem.ServerButton.onlineStatus">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color red="0.6899999976158142" green="0.07590000331401825" blue="0.3917228579521179" />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color red="0.9605262875556946" green="0.2178971767425537" blue="0.873886227607727" />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+
+      </children>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Pane>
+   <Pane id="serverInfoPane" layoutX="232.0" layoutY="280.0" prefHeight="51.0" prefWidth="473.0" visible="false">
+      <children>
+         <Label alignment="CENTER_RIGHT" layoutX="9.0" layoutY="14.0" prefHeight="21.0" prefWidth="64.0" text="%runtime.scenes.servermenuItem.ServerButton.online" textFill="#c6c6c6">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label id="serverOnline" layoutX="75.0" layoutY="14.0" text="12/100">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color red="0.21308480203151703" green="0.33322978019714355" blue="0.8684210777282715" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.5539981993779669">
+                        <color>
+                           <Color red="0.6358333230018616" green="0.4018000066280365" blue="0.9800000190734863" />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color red="0.831333339214325" green="0.23000000417232513" blue="1.0" />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label alignment="CENTER_RIGHT" layoutX="159.0" layoutY="14.0" prefHeight="21.0" prefWidth="58.0" text="%runtime.scenes.servermenuItem.ServerButton.size" textFill="#c6c6c6">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label id="serverSize" layoutX="222.0" layoutY="14.0" text="50k X 50k">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color red="0.21308480203151703" green="0.33322978019714355" blue="0.8684210777282715" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.5539981993779669">
+                        <color>
+                           <Color red="0.6358333230018616" green="0.4018000066280365" blue="0.9800000190734863" />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color red="0.831333339214325" green="0.23000000417232513" blue="1.0" />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label id="serverDifficulty" layoutX="424.0" layoutY="14.0" text="HARD">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color red="0.8383589386940002" green="0.30153509974479675" blue="0.9868420958518982" />
+                        </color>
+                     </Stop>
+                     <Stop offset="0.43990423964642333">
+                        <color>
+                           <Color red="0.9800000190734863" green="0.4018000066280365" blue="0.6413399577140808" />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color red="0.9800000190734863" green="0.30379998683929443" blue="0.35370999574661255" />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label alignment="CENTER_RIGHT" layoutX="334.0" layoutY="14.0" prefHeight="21.0" prefWidth="85.0" text="%runtime.scenes.servermenuItem.ServerButton.diff" textFill="#c6c6c6">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+      </children>
+   </Pane>
+
+   <!-- Подключение стилей-->
+   <stylesheets>
+      <URL value="@components.css" />
+      <URL value="@../styles/global.css" />
+      <URL value="@../styles/variables.css" />
+   </stylesheets>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+
+</Pane>

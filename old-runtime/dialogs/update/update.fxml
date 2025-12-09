@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane id="dialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <Label id="headingDialog" alignment="CENTER" layoutY="18.0" prefHeight="61.0" prefWidth="412.0" text="%runtime.dialogs.update.updateHeader">
+      <font>
+         <Font size="20.0" />
+      </font></Label>
+   <ProgressBar fx:id="progress" layoutX="80.0" layoutY="82.0" prefHeight="18.0" prefWidth="253.0" progress="1.0" />
+   <Label fx:id="progressPers" alignment="CENTER" layoutX="164.0" layoutY="93.0" prefHeight="17.0" prefWidth="90.0" text="100%" textFill="#b9b9b9" />
+   <Label fx:id="progressStatus" alignment="CENTER" layoutX="114.0" layoutY="122.0" prefHeight="17.0" prefWidth="194.0">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.39605262875556946" blue="0.5657894611358643" />
+                  </color>
+               </Stop>
+               <Stop offset="0.7101816991324276">
+                  <color>
+                     <Color red="0.7646949887275696" green="0.07906919717788696" blue="0.7763158082962036" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="1.0" green="0.18981482088565826" blue="0.18981482088565826" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+   </Label>
+
+   <!-- Подключение стилей-->
+   <stylesheets>
+      <URL value="@../dialogs.css" />
+      <URL value="@../../styles/global.css" />
+      <URL value="@../../styles/variables.css" />
+   </stylesheets>
+
+</Pane>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane id="dialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <Button id="close" graphicTextGap="0.0" layoutX="460.0" layoutY="21.0" maxHeight="10.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0" styleClass="icon-button">
+      <graphic>
+         <SVGPath content="M1 1L6 6M11 11L6 6M6 6L1 11L11 1" stroke="#b6b6bb" strokeLineCap="BUTT" strokeWidth="2.0" styleClass="icon-button-color" />
+      </graphic>
+      <tooltip>
+         <Tooltip id="exitTooltip" text="%runtime.scenes.login.exitTooltip" />
+      </tooltip>
+   </Button>
+   <Label id="headingDialog" alignment="CENTER" layoutX="39.0" layoutY="7.0" prefHeight="37.0" prefWidth="412.0" text="%runtime.dialogs.profile.profileHeader">
+      <font>
+         <Font size="24.0" />
+      </font></Label>
+   <Label id="nickname" layoutX="104.0" layoutY="74.0" prefHeight="20.0" prefWidth="140.0" style="-fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #8a5ff5 0.0%, #8a5ff5 0.6711%, #dd69d0 100.0%);" text="PLAYER123">
+      <padding>
+         <Insets left="10.0" />
+      </padding>
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.5398513674736023" green="0.3735380172729492" blue="0.9605262875556946" />
+                  </color>
+               </Stop>
+               <Stop offset="0.006711409395973154">
+                  <color>
+                     <Color red="0.5398513674736023" green="0.3735380172729492" blue="0.9605262875556946" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8684210777282715" green="0.4100877046585083" blue="0.8149488568305969" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <Line endX="-105.0" endY="58.0" layoutX="350.0" layoutY="79.0" startX="-105.0" stroke="#393939" />
+   <Line endX="385.5" layoutX="105.0" layoutY="51.0" startX="-105.0" stroke="#393939" />
+   <ImageView id="avatar" fitHeight="74.0" fitWidth="74.0" layoutX="22.0" layoutY="64.0" smooth="false">
+      <image>
+         <Image url="@../../images/icons/default.png" />
+      </image>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </ImageView>
+   <Label fx:id="role" layoutX="114.0" layoutY="94.0" prefHeight="17.0" prefWidth="81.0" text="Member">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.17909356951713562" green="0.5624390840530396" blue="0.9210526347160339" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.24488304555416107" green="0.83913254737854" blue="0.8815789222717285" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="20.0" layoutY="152.0">
+      <image>
+         <Image url="@../../images/icons/xp.png" />
+      </image>
+   </ImageView>
+   <Label fx:id="userXP" layoutX="55.0" layoutY="159.0" prefHeight="17.0" prefWidth="112.0" text="XP: 6475338">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.6139466762542725" green="0.7699999809265137" blue="0.18479999899864197" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.7763158082962036" green="0.5255705714225769" blue="0.12219785898923874" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill></Label>
+   <Label fx:id="registerDate" layoutX="264.0" layoutY="81.0" prefHeight="17.0" prefWidth="194.0" text="Registered: May 3 2022" textFill="#e1e1e1" />
+   <Label fx:id="totalPlaytime" layoutX="264.0" layoutY="108.0" prefHeight="17.0" prefWidth="194.0" text="Play Time: 23.8 hr." textFill="#e1e1e1" />
+   <ImageView fitHeight="43.0" fitWidth="41.0" layoutX="244.0" layoutY="146.0">
+      <image>
+         <Image url="@../../images/icons/rang.png" />
+      </image>
+   </ImageView>
+   <Label fx:id="userRang" layoutX="288.0" layoutY="158.0" prefHeight="17.0" prefWidth="112.0" text="Rang: 23">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="1.0" green="0.18518517911434174" blue="0.18518517911434174" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.9736841917037964" green="0.1667885035276413" blue="0.4895467758178711" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+   </Label>
+   <Label layoutX="22.0" layoutY="198.0" prefHeight="17.0" prefWidth="194.0" text="%runtime.dialogs.profile.favorite">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font>
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.42129629850387573" green="0.4405864179134369" blue="1.0" />
+                  </color>
+               </Stop>
+               <Stop offset="0.5335365853658537">
+                  <color>
+                     <Color red="0.1746000051498413" green="0.6442647576332092" blue="0.9700000286102295" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8866723775863647" green="0.1746000051498413" blue="0.9700000286102295" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+   </Label>
+   <Label layoutX="23.0" layoutY="268.0" text="%runtime.dialogs.profile.ach">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="1.0" green="0.9626666903495789" blue="0.4399999976158142" />
+                  </color>
+               </Stop>
+               <Stop offset="0.5335365853658537">
+                  <color>
+                     <Color red="0.7870045304298401" green="0.8421052694320679" blue="0.015594542026519775" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.9700000286102295" green="0.72001713514328" blue="0.1746000051498413" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+   </Label>
+   <Label fx:id="favServer" alignment="CENTER" layoutX="27.0" layoutY="230.0" prefHeight="17.0" prefWidth="437.0" text="%runtime.dialogs.profile.favoriteErr" textFill="#909090" />
+   <Label alignment="CENTER" layoutX="26.0" layoutY="301.0" prefHeight="17.0" prefWidth="437.0" text="%runtime.dialogs.profile.achErr" textFill="#909090" />
+   <Label fx:id="balance" layoutX="114.0" layoutY="115.0" prefHeight="17.0" prefWidth="125.0" text="Balance: DevMode">
+      <textFill>
+         <LinearGradient endX="1.0" endY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9200000166893005" green="0.60281902551651" blue="0.18400000035762787" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8799999952316284" green="0.24639999866485596" blue="0.8739657402038574" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </textFill>
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <ImageView fx:id="frame" fitHeight="90.0" fitWidth="90.0" layoutX="13.0" layoutY="56.0" visible="false">
+      <image>
+         <Image url="@../../images/components/avatarFrames/default.gif" />
+      </image>
+   </ImageView>
+
+   <!-- Подключение стилей-->
+   <stylesheets>
+      <URL value="@../dialogs.css" />
+      <URL value="@../../styles/global.css" />
+      <URL value="@../../styles/variables.css" />
+   </stylesheets>
+
+</Pane>

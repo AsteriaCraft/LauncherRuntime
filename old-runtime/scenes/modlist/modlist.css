@@ -1,0 +1,54 @@
+/* 
+FluffyCuteOwO#6745 - DarkenGravitLauncherRuntime
+*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+
+#modlistPane{
+    -fx-background-color: #181A1B;
+    -fx-background-radius: 8px;
+}
+
+.modlist-container {
+    -fx-opacity: 1;
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 4px;
+    -fx-max-width: 916px;
+}
+#modlistPane * .modlist-checkbox {
+    -fx-opacity: 1.0 ;
+    -fx-background-size: 20 20;
+    -fx-background-position: 30 7;
+    -fx-font-size: 14px;
+    -fx-font-family: "Manrope Bold";
+}
+.modlist-checkbox:hover, .modlist-checkbox:hover > * , .modlist-container:hover > * , .modlist-container:hover {
+    -fx-opacity: 0.92 ;
+}
+
+.modlist-checkbox:disabled, .modlist-checkbox:disabled > * {
+    -fx-opacity: 1.0 ;
+}
+
+#modlistPane * .modlist-checkbox .descriptiontext{
+    -fx-opacity: 1.0 ;
+    -fx-padding: 34 0 0 8;
+    -fx-max-width: 883px;
+}
+#modlistPane * .modlist-checkbox .maintext{
+    -fx-opacity: 1.0 ;
+    -fx-text-fill: #fafafa;
+    -fx-padding: 7 30 0 38;
+}
+#modlistPane * .modlist-checkbox .modversion {
+    -fx-opacity: 1.0 ;
+    -fx-text-fill: -fx-ramGR;
+}
+#modlist{
+    -fx-background-color: #282828;
+
+}
+

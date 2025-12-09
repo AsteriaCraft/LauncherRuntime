@@ -1,0 +1,100 @@
+/* 
+FluffyCuteOwO#6745 - DarkenGravitLauncherRuntime
+*/
+
+@import "../styles/global.css";
+@import "../styles/variables.css";
+
+#serverButtonLayout{
+    -fx-background-color: #202020;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-color: #282828;
+    -fx-min-height: 330px;
+}
+#serverButton{
+    -fx-min-width: 730px;
+    -fx-min-height: 330px;
+}
+#serverVersionLayout{
+    -fx-background-color: #202020;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-color: #282828;
+}
+#serverButtonImage, #serverButtonImageMain{
+    -fx-background-size: cover;
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-radius: 10 0 0 10;
+    -fx-max-width: 225px;
+    -fx-max-height: 330px;
+    -fx-min-width: 225px;
+    -fx-min-height: 330px;
+    -fx-border-color: #282828;
+}
+
+#nameServer{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'Manrope Bold';
+    -fx-font-size: 18px;
+}
+
+#genreServer{
+    -fx-text-fill: linear-gradient(from 12.3223% 0.0% to 100.0% 100.0%, #be19ff 0.0%, #772afc 34.0727%, #772afc 52.0134%, #ee0ea0 89.7692%, #ee0ea0 100.0%);
+    -fx-font-family: 'Manrope Bold';
+    -fx-font-size: 10px;
+}
+
+#notificationPane{
+    -fx-background-color: #202020;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #282828;
+}
+
+#notificationHeading{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'Manrope Bold';
+    -fx-font-size: 18px;
+}
+
+#notificationText{
+    -fx-text-fill: rgba(255,255,255,0.5);
+    -fx-font-family: 'Manrope Bold';
+    -fx-font-size: 10px;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: -fx-ramGR;
+    /*-fx-background-color: #00f175;*/
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-radius: 0;
+    -fx-max-height: 3;
+    -fx-min-height: 3;
+}
+.progress-error > .bar {
+     -fx-background-color: -fx-red;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-radius: 0;
+    -fx-max-height: 3;
+    -fx-min-height: 3;
+}
+.progress-bar {
+    -fx-background-color: #252525;
+    -fx-background-radius: 0;
+    -fx-max-height: 3;
+    -fx-min-height: 3;
+}
+.progress-bar .track {
+    -fx-background-color: #4b4b4b;
+    -fx-background-radius: 0;
+    -fx-max-height: 3;
+    -fx-min-height: 3;
+}
+#serverDescription{
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255,255,255,0.5);
+}
+#serverDescription .text {
+    -fx-line-spacing: 4px;
+}

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane fx:id="globalSettingsPane" prefHeight="800.0" prefWidth="1240.0" styleClass="transparent" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@globalSettings.css" />
+      <URL value="@../../styles/global.css" />
+      <URL value="@../../styles/variables.css" />
+   </stylesheets>
+   <children>
+      <Pane fx:id="layout" prefHeight="800.0" prefWidth="1240.0" styleClass="transparent">
+         <children>
+            <Pane id="header" prefHeight="800.0" prefWidth="1240.0">
+               <children>
+                  <Pane id="leftpane" prefHeight="800.0" prefWidth="210.0">
+                     <children>
+                        <Button id="serverspane" layoutY="109.0" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="210.0" styleClass="buttonunactive">
+                           <graphic>
+                              <Label id="buttonunactivetext" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" prefHeight="48.0" prefWidth="210.0" text="%runtime.scenes.menuItem.servers">
+                                 <padding>
+                                    <Insets bottom="-1" left="21.0" />
+                                 </padding>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                           </graphic>
+                        </Button>
+                        <Button id="news" layoutY="157.0" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="210.0" styleClass="buttonunactive">
+                           <graphic>
+                              <Label id="buttonunactivetext" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" prefHeight="48.0" prefWidth="210.0" text="%runtime.scenes.menuItem.news">
+                                 <padding>
+                                    <Insets left="21.0" />
+                                 </padding>
+                              </Label>
+                           </graphic>
+                        </Button>
+                        <Button id="changelog" layoutY="205.0" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="210.0" styleClass="buttonunactive">
+                           <graphic>
+                              <Label id="buttonunactivetext" maxHeight="48.0" maxWidth="210.0" minHeight="48.0" minWidth="210.0" prefHeight="48.0" prefWidth="210.0" text="%runtime.scenes.menuItem.Changes">
+                                 <padding>
+                                    <Insets left="21.0" />
+                                 </padding>
+                              </Label>
+                           </graphic>
+                        </Button>
+                        <Pane id="launcherSettings" layoutY="253.0" prefHeight="48.0" prefWidth="210.0">
+                           <children>
+                              <Label id="serverspanetxtactive" layoutX="21.0" layoutY="14.0" text="%runtime.scenes.menuItem.launcherSettings" />
+                           </children>
+                        </Pane>
+                        <Pane id="logo" layoutX="21.0" layoutY="22.0" prefHeight="16.0" prefWidth="16.0" />
+                        <Label id="title" ellipsisString="162" layoutX="47.0" layoutY="21.0" lineSpacing="162.0" text="%runtime.scenes.global.menuLabel" />
+                        <Line endX="105.5" layoutX="105.0" layoutY="109.0" startX="-105.0" stroke="#393939" />
+                        <Button id="profile" alignment="TOP_LEFT" layoutX="-19.0" layoutY="61.0" maxHeight="46.0" maxWidth="229.0" minHeight="46.0" minWidth="210.0" prefHeight="46.0" prefWidth="229.0" styleClass="buttonunactive" textAlignment="CENTER">
+                           <graphic>
+                              <Label id="nickname" alignment="TOP_LEFT" graphicTextGap="12.0" prefHeight="37.0" prefWidth="228.0" style="-fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #8a5ff5 0.0%, #8a5ff5 0.6711%, #dd69d0 100.0%);" text="PLAYER123">
+                                 <padding>
+                                    <Insets left="32.0" />
+                                 </padding>
+                                 <textFill>
+                                    <LinearGradient endX="1.0" endY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.5398513674736023" green="0.3735380172729492" blue="0.9605262875556946" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006711409395973154">
+                                             <color>
+                                                <Color red="0.5398513674736023" green="0.3735380172729492" blue="0.9605262875556946" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.8684210777282715" green="0.4100877046585083" blue="0.8149488568305969" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </textFill>
+                                 <graphic>
+                                    <ImageView id="avatar" fitHeight="37.0" fitWidth="37.0" smooth="false">
+                                       <image>
+                                          <Image url="@../../images/icons/default.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                           </graphic>
+                        </Button>
+                        <ImageView fx:id="frame" fitHeight="46.0" fitWidth="46.0" layoutX="16.0" layoutY="61.0" visible="false">
+                           <image>
+                              <Image url="@../../images/components/avatarFrames/default.gif" />
+                           </image>
+                        </ImageView>
+                        <Line endX="109.5" layoutX="101.0" layoutY="60.0" startX="-100.0" stroke="#393939" />
+                        <Line endX="105.5" layoutX="105.0" layoutY="751.0" startX="-106.0" stroke="#393939" />
+                        <Button id="deauth" layoutX="160.0" layoutY="752.0" prefHeight="47.0" prefWidth="50.0" styleClass="buttonunactive">
+                           <tooltip>
+                              <Tooltip id="deauthTooltip" text="%runtime.scenes.servermenu.deauthTooltip" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="30.0" layoutX="-3.0" layoutY="-6.0" preserveRatio="true" smooth="false">
+                                 <image>
+                                    <Image url="@../../images/icons/logout.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Line endX="50.25" endY="-5.5" layoutX="111.0" layoutY="805.0" startX="50.25" startY="-52.5" stroke="#393939" />
+                        <Label layoutX="19.0" layoutY="756.0" prefHeight="17.0" prefWidth="123.0" text="Asteria Launcher" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="19.0" layoutY="775.0" prefHeight="17.0" prefWidth="123.0" text="Dev build  v2.3.245" textFill="#c3c3c3">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane id="contentbox" layoutX="210.0" layoutY="123.0" prefHeight="670.0" prefWidth="1030.0">
+                     <children>
+                        <Button id="changeDir" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="41.0" layoutY="305.0" prefHeight="27.0" prefWidth="156.0" text="%runtime.scenes.global.changeDirBtn">
+                           <tooltip>
+                              <Tooltip id="changedirTooltip" text="%runtime.scenes.settings.changedirTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Hyperlink id="path" focusTraversable="false" layoutX="42.0" layoutY="330.0" prefHeight="40.0" prefWidth="344.0" text="C:/Users" textFill="#4f62f2">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Hyperlink>
+                        <Label layoutX="41.0" layoutY="246.0" styleClass="header" text="%runtime.scenes.settings.changeDir.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="41.0" layoutY="277.0" text="%runtime.scenes.settings.changeDir.desc" textFill="#ababab" />
+                        <Label layoutX="525.0" layoutY="15.0" styleClass="header" text="%runtime.scenes.settings.more.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Label>
+                        <Label layoutX="525.0" layoutY="47.0" text="%runtime.scenes.settings.more.desc" textFill="#ababab" />
+                        <ScrollPane id="settingslist" layoutX="523.0" layoutY="74.0" prefHeight="407.0" prefWidth="474.0">
+                           <content>
+                              <VBox fx:id="componentList1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0" minWidth="0" prefHeight="403.0" prefWidth="463.0" />
+                           </content>
+                        </ScrollPane>
+                        <Button id="deleteDirs" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="41.0" layoutY="560.0" prefHeight="27.0" prefWidth="140.0" styleClass="dangBtn" text="%runtime.scenes.settings.deleteUpdatesdir.btn" textFill="WHITE">
+                           <tooltip>
+                              <Tooltip id="changedirsTooltip" text="%runtime.scenes.settings.deleteUpdatesdir.btnTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Button id="deleteCache" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="214.0" layoutY="560.0" prefHeight="27.0" prefWidth="140.0" styleClass="dangBtn" text="%runtime.scenes.settings.deleteCache.btn" textFill="WHITE">
+                           <tooltip>
+                              <Tooltip id="deleteCacheTooltip" text="%runtime.scenes.settings.deleteCache.btnTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Label layoutX="42.0" layoutY="371.0" prefHeight="20.0" prefWidth="282.0" styleClass="header" text="%runtime.scenes.settings.Cache.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="42.0" layoutY="402.0" prefHeight="20.0" prefWidth="282.0" text="%runtime.scenes.settings.Cache.desc" textFill="#ababab" />
+                        <Pane layoutX="42.0" layoutY="191.0" prefHeight="40.0" prefWidth="220.0">
+                           <children>
+                              <ComboBox id="langCombo" layoutY="-5.0" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: #202020;" styleClass="combo-box" />
+                           </children>
+                        </Pane>
+                        <Label layoutX="42.0" layoutY="128.0" prefHeight="20.0" prefWidth="282.0" styleClass="header" text="%runtime.scenes.settings.Lang.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="42.0" layoutY="486.0" prefHeight="20.0" prefWidth="282.0" styleClass="header" text="%runtime.scenes.settings.Cache.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="42.0" layoutY="518.0" prefHeight="20.0" prefWidth="282.0" text="%runtime.scenes.settings.Cache.desc" textFill="#ababab" />
+                        <Button id="copenconsole" layoutX="41.0" layoutY="440.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="101.0">
+                           <tooltip>
+                              <Tooltip id="backTooltip" text="%runtime.scenes.global.saveBtnTooltip" />
+                           </tooltip>
+                           <graphic>
+                              <Label id="textexit" text="%runtime.scenes.menuItem.console" />
+                           </graphic>
+                        </Button>
+                        <Label layoutX="42.0" layoutY="158.0" prefHeight="20.0" prefWidth="282.0" text="%runtime.scenes.settings.Lang.desc" textFill="#ababab" />
+                        <Label layoutX="42.0" layoutY="15.0" prefHeight="20.0" prefWidth="282.0" styleClass="header" text="%runtime.scenes.settings.Theme.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="41.0" layoutY="45.0" prefHeight="20.0" prefWidth="282.0" text="%runtime.scenes.settings.Theme.desc" textFill="#ababab" />
+                        <Pane layoutX="42.0" layoutY="77.0" prefHeight="40.0" prefWidth="220.0">
+                           <children>
+                              <ComboBox id="themeCombo" layoutY="-4.0" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: #202020;" styleClass="combo-box" />
+                           </children>
+                        </Pane>
+                        <Button id="resetLauncher" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="522.0" layoutY="560.0" prefHeight="27.0" prefWidth="140.0" styleClass="dangBtn" text="%runtime.scenes.settings.resetLauncher.btn" textFill="WHITE">
+                           <tooltip>
+                              <Tooltip id="deleteCacheTooltip" text="%runtime.scenes.settings.resetLauncher.btnTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Label layoutX="525.0" layoutY="486.0" prefHeight="20.0" prefWidth="282.0" styleClass="header" text="%runtime.scenes.settings.Cache.header" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="525.0" layoutY="518.0" prefHeight="20.0" prefWidth="282.0" text="%runtime.scenes.settings.Cache.desc" textFill="#ababab" />
+                     </children>
+                  </Pane>
+                  <Pane id="controls" prefHeight="60.0" prefWidth="1240.0">
+                     <children>
+                        <Button id="exit" graphicTextGap="0.0" layoutX="1210.0" layoutY="25.0" maxHeight="10.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0" styleClass="icon-button">
+                           <graphic>
+                              <SVGPath content="M1 1L6 6M11 11L6 6M6 6L1 11L11 1" stroke="#b6b6bb" strokeLineCap="BUTT" strokeWidth="2.0" styleClass="icon-button-color" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip id="exitTooltip" text="%runtime.scenes.login.exitTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Button id="minimize" layoutX="1164.0" layoutY="24.0" maxHeight="10.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0" styleClass="icon-button">
+                           <graphic>
+                              <SVGPath content="M0 1H10" stroke="#b6b6bb" strokeWidth="2.0" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip id="minimizeTooltip" text="%runtime.scenes.login.minimizeTooltip" />
+                           </tooltip>
+                        </Button>
+                        <Pane id="javaVer" layoutX="481.0" layoutY="30.0" prefHeight="27.0" prefWidth="120.0">
+                           <children>
+                              <Label id="javaVertext" alignment="CENTER" prefHeight="27.0" prefWidth="120.0" text="Version error " />
+                           </children>
+                        </Pane>
+                        <Pane id="javaErrorVerPane" layoutX="623.0" layoutY="20.0" prefHeight="47.0" prefWidth="397.0" visible="false">
+                           <children>
+                              <ImageView fitHeight="27.0" fitWidth="30.0" layoutX="8.0" layoutY="10.0">
+                                 <image>
+                                    <Image url="@../../images/icons/alert.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="48.0" layoutY="6.0" prefHeight="17.0" prefWidth="344.0" text="Using old java version" textFill="WHITE" />
+                              <Label layoutX="48.0" layoutY="25.0" prefHeight="17.0" prefWidth="344.0" text="For better experience use java 11 or later " textFill="#e4e4e4" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+                  <Button id="back" layoutX="251.0" layoutY="30.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="60.0">
+                     <tooltip>
+                        <Tooltip id="backTooltip" text="%runtime.scenes.global.saveBtnTooltipExit" />
+                     </tooltip>
+                     <graphic>
+                        <Label id="textexit" text="%runtime.scenes.global.backLabel" />
+                     </graphic>
+                  </Button>
+                  <Button id="savesettings" layoutX="319.0" layoutY="30.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="155.0">
+                     <tooltip>
+                        <Tooltip id="backTooltip" text="%runtime.scenes.global.saveBtnTooltip" />
+                     </tooltip>
+                     <graphic>
+                        <Label id="textexit" text="%runtime.scenes.global.saveBtn" />
+                     </graphic>
+                  </Button>
+                  <Label id="money" layoutX="93.0" layoutY="50.0" prefHeight="20.0" prefWidth="282.0" text="100 МОНЕТ" visible="false">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip id="moneyTooltip" text="%runtime.scenes.servermenu.moneyTooltip" />
+                     </tooltip>
+                  </Label>
+                  <Text fill="WHITE" layoutX="252.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%runtime.scenes.menuItem.launcherSettings">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Line endX="846.5" layoutX="352.0" layoutY="115.0" startX="-100.0" stroke="#8a8a8a" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Line endX="210.0" startX="210.0" startY="800.0" stroke="#282828" />
+   </children>
+</Pane>

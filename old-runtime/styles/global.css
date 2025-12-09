@@ -1,0 +1,446 @@
+@import "./variables.css";
+
+@font-face {
+    font-family: 'Manrope Bold';
+    src: url('./Manrope-Bold.ttf');
+}
+@font-face {
+    font-family: 'Manrope ExtraBold';
+    src: url('./Manrope-ExtraBold.ttf');
+}
+@font-face {
+    font-family: 'Manrope ExtraLight';
+    src: url('./Manrope-ExtraLight.ttf');
+}
+@font-face {
+    font-family: 'Manrope Light';
+    src: url('./Manrope-Light.ttf');
+}
+@font-face {
+    font-family: 'Manrope Medium';
+    src: url('./Manrope-Medium.ttf');
+}
+@font-face {
+    font-family: 'Manrope Regular';
+    src: url('./Manrope-Regular.ttf');
+}
+@font-face {
+    font-family: 'Manrope SemiBold';
+    src: url('./Manrope-SemiBold.ttf');
+}
+@font-face {
+    font-family: 'Minecraft Ten';
+    src: url('./Minecraft.ttf');
+}
+
+#authtxt{
+    -fx-font-family: "Minecraft Ten";
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 0px, 0px, 0px, 2px);
+}
+#layout {
+    -fx-background-color: #181A1B;
+    -fx-background-radius: 8px;
+}
+#logo{
+    -fx-background-image: url('../images/icons/logo.png');
+    -fx-background-size: cover;
+}
+
+#logobutton{
+    -fx-background-size: cover;
+}
+#title{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 14px;
+}
+#leftpane{
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 8 0 0 8;
+}
+#playersPane{
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4;
+}
+.authActivepassw{
+    -fx-background-image: url('../images/icons/buttonmc.png');
+}
+.authActivepassw:hover{
+    -fx-background-image: url('../images/icons/buttonmchover.png');
+}
+.wow{
+    -fx-background-color: rgba(255,255,255,0.0)
+}
+.buttonunactive{
+    -fx-background-radius: 0px;
+    -fx-background-color: #1C1E20;
+}
+.buttonunactive:hover{
+    -fx-background-color: #282828;
+}
+#buttonunactivetext{
+    -fx-text-fill: #99999A;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 14px;
+}
+#buttonunactivetext:hover{
+    -fx-text-fill: #FFFFFF;
+}
+#logouttext{
+    -fx-text-fill: #D84343;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 14px;
+}
+#logouttext:hover{
+    -fx-text-fill: #E04B4B;
+}
+#nickname{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 14px;
+}
+#back, #savesettings, #cancel, #kill, #copenconsole, #copenConfig, #copenMods , #changeDir, #reload, #backBtn , #crashLogs, #crashLastOpen, #argsField{
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4px;
+    -fx-border-color: #282828;
+    -fx-text-fill: #fafafa;
+    -fx-border-radius: 4px;
+}
+#textexit{
+    -fx-font-size: 12px;
+    -fx-font-family: "Manrope Medium";
+    -fx-text-fill: #FFFFFF;
+}
+#back:hover, #savesettings:hover, #cancel:hover, #kill:hover, .check-box:hover, #copenconsole:hover, #copenConfig:hover, #copenMods:hover, #changeDir:hover, #reload:hover, #backBtn:hover, #crashLogs:hover, #crashLastOpen:hover{
+    -fx-background-color: #222222;
+}
+
+#serverspanetxtactive{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Manrope Bold";
+    -fx-font-size: 14px;
+}
+.check-box {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-family: "Manrope Bold";
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4px;
+    -fx-background-image: url('../images/icons/checkbox_off.png');
+    -fx-background-repeat: no-repeat;
+    -fx-alignment: center-left;
+    /* -fx-text-align: left; */
+}
+.maintext{
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center-left;
+
+}
+.descriptiontext {
+    -fx-text-fill: #99999A;
+    -fx-font-size: 12px;
+    -fx-font-family: "Manrope Regular";
+    -fx-max-width: 430px;
+    -fx-alignment: center-left;
+}
+#fullTextServer{
+
+}
+.combo-box .list-cell {
+    -fx-text-fill: #99999A;
+}
+.combo-box-popup .list-view{
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4px;
+    -fx-border-color: #282828;
+    -fx-border-radius: 4px;
+}
+.combo-box-popup .list-view .list-cell{
+    -fx-text-fill: #99999A;
+    -fx-padding: 8;
+    -fx-background-color: #1C1E20;
+    -fx-background-radius: 4px;
+}
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: #282828;
+    -fx-text-fill: #99999A;
+}
+.combo-box-popup .list-view .list-cell:filled:hover{
+    -fx-background-color: #282828;
+    -fx-text-fill: #FFFFFF;
+}
+.combo-box .arrow-button{
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+    -fx-background-position: center center;
+    -fx-background-size: 50% 20%;
+}
+.combo-box-popup .list-cell {
+    -fx-background-color: #ff0000;
+    -fx-text-fill: #ff0000;
+}
+.combo-box .arrow{
+    -fx-background-color: transparent;
+}
+.root {
+    -fx-font-family: "Manrope Medium";
+}
+.check-box .mark {
+    -fx-background-color: transparent;
+}
+.check-box .box {
+    -fx-background-color: transparent;
+}
+.check-box:selected {
+    -fx-background-color: #252525;
+    -fx-background-image: url('../images/icons/checkbox_on.png');
+    -fx-background-repeat: no-repeat;
+}
+.check-box:selected .mark {
+    -fx-background-color: transparent;
+}
+.check-box:selected .box {
+    -fx-background-color: transparent;
+}
+
+Button,
+CheckBox,
+ComboBox,
+RadioButton {
+    -fx-cursor: hand;
+}
+
+/*-- Шрифты --*/
+
+/*-- Вид блоков --*/
+.blocks {
+    -fx-padding: 10px;
+    -fx-background-color: -fx-white;
+    -fx-background-radius: 0;
+}
+
+/*-- Скругление блоков и кнопок --*/
+.b-5 {
+    -fx-border-radius: 5px;
+}
+.b-10 {
+    -fx-border-radius: 10px;
+}
+.b-20 {
+    -fx-border-radius: 20px;
+}
+
+/*-- Управление прозрачностью --*/
+.transparent {
+    -fx-background-color: transparent;
+    -fx-background-size: cover;
+}
+
+/*-- Импорт фона --*/
+
+.buttonProfile{
+    -fx-background-color: transparent;
+    -fx-background-size: cover;
+}
+.buttonProfile:hover {
+    -fx-background-color: #b1b1b1;
+    -fx-opacity: 0.2;
+}
+/* (тех. Кнопки) */
+.invisible{
+    -fx-opacity: 0;
+}
+.visible{
+    -fx-opacity: 1;
+}
+
+/*-- Иконки --*/
+.header-button {
+    -fx-fill: transparent;
+    -fx-stroke: -fx-header;
+    -fx-stroke-width: 1px;
+}
+.header-button-text {
+    -fx-font-size: 10px;
+    -fx-fill: -fx-header;
+    -fx-align-items: center;
+    -fx-font-weight: bold;
+}
+.header-button:hover,
+.icon-button:hover {
+    -fx-opacity: 0.6;
+}
+.icon-button {
+    -fx-background-position: center;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+}
+.icon-button-color {
+    -fx-fill: -fx-header;
+}
+.icon-button-error {
+    -fx-fill: -fx-red;
+}
+
+/*-- Информация игрока --*/
+#money {
+    -fx-font-weight: normal;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-black2C;
+}
+#avatar {
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-font-smoothing-type: lcd;
+}
+
+/*-- Заголовки --*/
+#dialogHeader,
+#headerDescription{
+    -fx-fill: -fx-black2C;
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+#loginActive{
+    -fx-fill: -fx-black2C;
+    -fx-background-color: #1C1E20;
+}
+
+/*-- Блок вывода --*/
+
+
+/*-- Кнопка отправить --*/
+.send-button-text {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-align: center;
+    -fx-fill: -fx-header;
+}
+.send-button-text:hover,
+.send-button-text:pressed {
+    -fx-fill: -fx-header-hover;
+}
+
+/*-- Контекстное меню --*/
+.context-menu {
+    -fx-background-color: -fx-whiteG;
+    -fx-background-insets: 0;
+    -fx-padding: 5px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 5px;
+}
+.menu-item {
+    -fx-background-radius: 0px;
+}
+.menu-item:hover, .menu-item:focused {
+    -fx-background-color: -fx-grayLTr;
+}
+.menu-item > .graphic-container {
+    -fx-padding: 0em 0.333em 0em 0em;
+}
+.menu-item .label {
+    -fx-text-fill: -fx-black2C;
+}
+.menu-item:focused .label {
+    -fx-text-fill: -fx-black2C-hover;
+    -fx-font-weight: bold;
+}
+
+
+/* check-box элементы */
+
+
+
+
+/* Скролл панели */
+#scroll-pane {
+    -fx-background-color: transparent;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane .content {
+    -fx-background-color: transparent;
+}
+.scroll-bar:horizontal,
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+.increment-button,
+.decrement-button,
+.increment-arrow,
+.decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-black2C-hover;
+    -fx-background-radius: 10;
+    -fx-padding: 10 0 0 0px;
+    -fx-background-insets: 0, 0, 0, 10;
+}
+.scroll-bar {
+    -fx-font-size: 6px;
+}
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+
+
+/* choice-box элементы */
+.choice-box .context-menu {
+    -fx-background-color: -fx-whiteG;
+    -fx-pref-width: 130px;
+}
+.choice-box .menu-item:focused {
+    -fx-background-color: -fx-violet;
+}
+.choice-box .menu-item > .label {
+    -fx-text-fill: #FFFFFF;
+}
+.choice-box .menu-item:focused>.label {
+    -fx-text-fill: -fx-white;
+}
+.choice-box {
+    -fx-background-color: -fx-whiteG;
+    -fx-mark-color: -fx-whiteG;
+}
+.choice-box > .label {
+    -fx-text-fill: -fx-whiteG;
+}
+.langChoice {
+    -fx-background-color: #2f2f2f;
+}
+.langChoice .label {
+    -fx-text-fill: #8f8f8f;
+}
+.dangBtn{
+    -fx-background-color: -fx-red;
+    -fx-text-fill: #fafafa;
+    -fx-font-size: 12px;
+}
+.dangBtn:hover{
+    -fx-opacity: 0.93;
+}
+.labelInfo{
+    -fx-text-fill: #9e9e9e;
+    -fx-font-size: 28px;
+}
+/* combo-box элементы */
+
+
+
+
+/*-- DrLeonardo styles refactor --*/

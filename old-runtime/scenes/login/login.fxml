@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<!-- DrLeonardo refactor -->
+
+<Pane fx:id="loginPane" prefHeight="800.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@login.css" />
+        <URL value="@../../styles/global.css" />
+        <URL value="@../../styles/variables.css" />
+    </stylesheets>
+    <Pane fx:id="layout" prefHeight="800.0" prefWidth="1240.0">
+
+
+        <!-- Навбар -->
+        <Pane id="header" prefHeight="800.0" prefWidth="1240.0">
+            <children>
+                <Pane id="backgroundimage" prefHeight="800.0" prefWidth="1240.0" />
+
+                <!-- Кнопки управления -->
+                <Pane id="controls" prefHeight="60.0" prefWidth="1240.0">
+                    <children>
+
+                        <Pane id="logo" layoutX="547.0" layoutY="22.0" prefHeight="16.0" prefWidth="16.0" />
+                        <TextFlow id="logoText" layoutX="573.0" layoutY="20.0" lineSpacing="162.0">
+                            <children>
+                                <Label id="title" text="%runtime.scenes.login.logoName" />
+                                <Label id="title" text="%runtime.scenes.login.logoProduct" />
+                            </children>
+                        </TextFlow>
+
+                        <!-- Кнопка закрыть -->
+                        <Button id="exit" graphicTextGap="0.0" layoutX="1210.0" layoutY="25.0" maxHeight="10.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0" styleClass="icon-button">
+                            <graphic>
+                                <SVGPath content="M1 1L6 6M11 11L6 6M6 6L1 11L11 1" stroke="#b6b6bb" strokeLineCap="BUTT" strokeWidth="2.0" styleClass="icon-button-color" />
+                            </graphic>
+                            <tooltip>
+                                <Tooltip id="exitTooltip" text="%runtime.scenes.login.exitTooltip" />
+                            </tooltip>
+                        </Button>
+                        <Button id="lang" layoutX="1107.0" layoutY="18.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="34.0" styleClass="icon-button">
+                            <graphic>
+                                <SVGPath content="M 0 5 C 0 3.621094 1.121094 2.5 2.5 2.5 L 22.5 2.5 C 23.878906 2.5 25 3.621094 25 5 L 25 15 C 25 16.378906 23.878906 17.5 22.5 17.5 L 2.5 17.5 C 1.121094 17.5 0 16.378906 0 15 Z M 12.5 5 L 12.5 15 L 22.5 15 L 22.5 5 Z M 6.964844 6.871094 C 6.839844 6.589844 6.558594 6.40625 6.25 6.40625 C 5.941406 6.40625 5.660156 6.589844 5.535156 6.871094 L 3.035156 12.496094 C 2.859375 12.890625 3.039062 13.351562 3.433594 13.527344 C 3.828125 13.703125 4.289062 13.523438 4.464844 13.128906 L 4.8125 12.34375 L 7.6875 12.34375 L 8.035156 13.128906 C 8.210938 13.523438 8.671875 13.699219 9.066406 13.527344 C 9.460938 13.355469 9.636719 12.890625 9.464844 12.496094 Z M 6.25 9.109375 L 6.992188 10.78125 L 5.507812 10.78125 Z M 17.5 6.40625 C 17.929688 6.40625 18.28125 6.757812 18.28125 7.1875 L 18.28125 7.34375 L 20.625 7.34375 C 21.054688 7.34375 21.40625 7.695312 21.40625 8.125 C 21.40625 8.554688 21.054688 8.90625 20.625 8.90625 L 20.546875 8.90625 L 20.484375 9.082031 C 20.136719 10.035156 19.609375 10.902344 18.9375 11.636719 C 18.972656 11.660156 19.007812 11.679688 19.042969 11.699219 L 19.78125 12.140625 C 20.152344 12.363281 20.269531 12.84375 20.050781 13.210938 C 19.832031 13.578125 19.347656 13.699219 18.980469 13.480469 L 18.242188 13.039062 C 18.066406 12.933594 17.898438 12.824219 17.730469 12.707031 C 17.316406 13 16.875 13.253906 16.402344 13.464844 L 16.261719 13.527344 C 15.867188 13.703125 15.40625 13.523438 15.230469 13.128906 C 15.054688 12.734375 15.234375 12.273438 15.628906 12.097656 L 15.769531 12.035156 C 16.019531 11.921875 16.261719 11.796875 16.492188 11.652344 L 16.015625 11.175781 C 15.710938 10.871094 15.710938 10.375 16.015625 10.070312 C 16.320312 9.765625 16.816406 9.765625 17.121094 10.070312 L 17.710938 10.660156 C 18.195312 10.148438 18.589844 9.554688 18.875 8.902344 L 14.6875 8.902344 C 14.257812 8.902344 13.90625 8.550781 13.90625 8.121094 C 13.90625 7.691406 14.257812 7.339844 14.6875 7.339844 L 16.71875 7.339844 L 16.71875 7.183594 C 16.71875 6.753906 17.070312 6.402344 17.5 6.402344 Z M 17.5 6.40625 " styleClass="icon-button-color" />
+                            </graphic>
+                            <contextMenu>
+                                <ContextMenu id="langChoice">
+                                </ContextMenu>
+                            </contextMenu>
+                            <tooltip>
+                                <Tooltip id="langTooltip" text="%runtime.scenes.login.langTooltip" />
+                            </tooltip>
+                        </Button>
+                        <!-- Кнопка свернуть -->
+                        <Button id="minimize" layoutX="1164.0" layoutY="24.0" maxHeight="10.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0" styleClass="icon-button">
+                            <graphic>
+                                <SVGPath content="M0 1H10" stroke="#b6b6bb" strokeWidth="2.0" />
+                            </graphic>
+                            <tooltip>
+                                <Tooltip id="minimizeTooltip" text="%runtime.scenes.login.minimizeTooltip" />
+                            </tooltip>
+                        </Button>
+                    </children>
+                </Pane>
+
+                <Pane id="loginbg" layoutX="450.0" layoutY="255.0" prefHeight="348.0" prefWidth="340.0">
+                    <children>
+                        <Label id="welcometext" alignment="CENTER" layoutX="11.0" layoutY="31.0" prefHeight="35.0" prefWidth="316.0" text="%runtime.scenes.login.welcomeText" />
+                        <Label id="selectauthtext" alignment="CENTER" layoutY="73.0" prefHeight="20.0" prefWidth="340.0" text="%runtime.scenes.login.authChoosingText" textAlignment="CENTER" />
+
+                        <!-- Блок атворизации -->
+                        <Pane id="authButtonBlock" fx:id="auth" layoutX="29.0" layoutY="112.0" prefHeight="164.0" prefWidth="282.0">
+                            <children>
+                                <Pane id="authUnactive" maxHeight="44.0" maxWidth="282.0" minHeight="44.0" minWidth="282.0" prefHeight="44.0" prefWidth="282.0" />
+
+                                <!-- Активная кнопка -->
+                                <Pane id="authActive" layoutY="2.0" maxHeight="44.0" maxWidth="282.0" minHeight="44.0" minWidth="282.0" prefHeight="44.0" prefWidth="282.0" styleClass="authActive">
+                                    <VBox fx:id="authList" prefHeight="149.0" prefWidth="140.0" spacing="10">
+                                    </VBox>
+                                </Pane>
+
+                            </children>
+                        </Pane>
+                        <CheckBox fx:id="savePassword" layoutX="14.0" layoutY="287.0" prefHeight="44.0" prefWidth="148.0" styleClass="savePassword" text="%runtime.scenes.login.savePassword">
+                            <padding>
+                                <Insets left="5.0" />
+                            </padding>
+                            <Label id="welcometext" alignment="CENTER" layoutY="31.0" prefHeight="35.0" prefWidth="340.0" text="%runtime.scenes.login.welcomeText" />
+                        </CheckBox>
+                        <CheckBox fx:id="autoEnter" layoutX="178.0" layoutY="287.0" prefHeight="44.0" prefWidth="148.0" styleClass="autoEnter" text="%runtime.scenes.login.autoenter">
+                            <padding>
+                                <Insets left="5.0" />
+                            </padding>
+                        </CheckBox>
+                  <Pane id="loginActive" layoutX="11.0" layoutY="12.0" prefHeight="328.0" prefWidth="323.0" visible="false">
+                     <children>
+                        <Label id="loginActiveText" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="165.0" prefHeight="60.0" prefWidth="222.0" text="Cheking user....." textAlignment="CENTER" textFill="#c9c9c9">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="112.0" fitWidth="204.0" layoutX="60.0" layoutY="70.0">
+                           <image>
+                              <Image url="@../../images/icons/loading.gif" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+
+    </Pane>
+
+    <Pane id="player" layoutX="480.0" layoutY="350.0" prefHeight="104.0" prefWidth="282.0" visible="false">
+        <children>
+            <ImageView id="playerHead" fitHeight="53.0" fitWidth="53.0" layoutX="13.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../images/icons/default.png" />
+                </image>
+            </ImageView>
+            <Label id="playerName" layoutX="79.0" layoutY="15.0" prefHeight="49.0" prefWidth="204.0" text="PLAYER123456">
+                <textFill>
+                    <LinearGradient endX="1.0" endY="1.0">
+                        <stops>
+                            <Stop>
+                                <color>
+                                    <Color red="0.5018843412399292" green="0.24171540141105652" blue="0.8421052694320679" />
+                                </color>
+                            </Stop>
+                            <Stop offset="1.0">
+                                <color>
+                                    <Color red="0.8600000143051147" green="0.4214000105857849" blue="0.8265828490257263" />
+                                </color>
+                            </Stop>
+                        </stops>
+                    </LinearGradient>
+                </textFill>
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <Label id="welcome" layoutX="79.0" layoutY="57.0" text="%runtime.scenes.login.welcome" textFill="WHITE" />
+        </children>
+    </Pane>
+
+    <!-- Подключение стилей-->
+</Pane>
