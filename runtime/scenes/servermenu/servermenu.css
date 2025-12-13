@@ -1,0 +1,23 @@
+/*-- DrLeonardo styles refactor --*/
+
+@import "../../styles/global.css";
+@import "../../styles/variables.css";
+
+#serverspane {
+    -fx-background-color: #282828;
+}
+
+#serverPane {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+
+}
+
+#rightPanes {
+    -fx-background-color: #202020;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-color: #282828;
+}
+
+/*-- DrLeonardo styles refactor --*/
